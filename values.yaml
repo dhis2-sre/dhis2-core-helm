@@ -11,7 +11,6 @@ dhisConfig: |
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
 
-
 replicaCount: 1
 
 image:
