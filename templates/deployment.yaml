@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dhis2-core-helm.fullname" . }}
+  labels:
+    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "dhis2-core-helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dhis2-core-helm.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: copy-ro-config
+          image: busybox
+          command: ['sh', '-c', 'cp /ro/* /rw/']
+          volumeMounts:
+            - name: dhis-conf-rw
+              mountPath: /rw
+            - name: dhis-conf-ro
+              mountPath: /ro
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 300
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 300
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - name: dhis-conf-rw
+              mountPath: /DHIS2_home
+              readOnly: false
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: dhis-conf-rw
+          emptyDir: {}
+        - name: dhis-conf-ro
+          configMap:
+            name: {{ include "dhis2-core-helm.fullname" . }}
+            items:
+              - key: dhis.conf
+                path: dhis.conf
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
