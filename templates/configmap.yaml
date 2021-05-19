@@ -6,4 +6,4 @@ metadata:
     {{- include "dhis2-core-helm.labels" . | nindent 4 }}
 data:
   dhis.conf: |
-    {{- .Files.Get .Values.dhisConfig | nindent 4 }}
+    {{- .Values.dhisConfig | nindent 4 }}
