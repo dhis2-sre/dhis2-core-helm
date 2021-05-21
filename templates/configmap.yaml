@@ -7,3 +7,5 @@ metadata:
 data:
   dhis.conf: |
     {{- .Values.dhisConfig | nindent 4 }}
+  server.xml: |
+    {{- .Files.Get .Values.serverXml | nindent 4 }}

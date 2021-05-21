@@ -11,6 +11,9 @@ dhisConfig: |
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
 
+serverXml: config/server.xml
+catalinaOpts: "-Dcontext.path=/"
+
 replicaCount: 1
 
 image:

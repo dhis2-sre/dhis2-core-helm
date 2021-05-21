@@ -33,18 +33,26 @@ spec:
       initContainers:
         - name: copy-ro-config
           image: busybox
-          command: ['sh', '-c', 'cp /ro/* /rw/']
+          command: ['sh', '-c', 'cp -v /dhis-conf-ro/* /dhis-conf-rw/ && cp -v /server-xml-ro/* /server-xml-rw/']
           volumeMounts:
-            - name: dhis-conf-rw
-              mountPath: /rw
             - name: dhis-conf-ro
-              mountPath: /ro
+              mountPath: /dhis-conf-ro
+            - name: dhis-conf-rw
+              mountPath: /dhis-conf-rw
+
+            - name: server-xml-rw
+              mountPath: /server-xml-rw
+            - name: server-xml-ro
+              mountPath: /server-xml-ro
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: CATALINA_OPTS
+              value: {{ .Values.catalinaOpts }}
           ports:
             - name: http
               containerPort: 8080
@@ -63,9 +71,13 @@ spec:
             - name: dhis-conf-rw
               mountPath: /DHIS2_home
               readOnly: false
+            - name: server-xml-rw
+              mountPath: /usr/local/tomcat/conf/server.xml
+              subPath: server.xml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+
         - name: dhis-conf-rw
           emptyDir: {}
         - name: dhis-conf-ro
@@ -74,6 +86,16 @@ spec:
             items:
               - key: dhis.conf
                 path: dhis.conf
+
+        - name: server-xml-rw
+          emptyDir: {}
+        - name: server-xml-ro
+          configMap:
+            name: {{ include "dhis2-core-helm.fullname" . }}
+            items:
+              - key: server.xml
+                path: server.xml
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
