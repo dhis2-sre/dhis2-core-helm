@@ -58,14 +58,14 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
-            initialDelaySeconds: 300
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             httpGet:
-              path: /
+              path: {{ .Values.livenessProbe.path }}
               port: http
           readinessProbe:
-            initialDelaySeconds: 300
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             httpGet:
-              path: /
+              path: {{ .Values.readinessProbe.path }}
               port: http
           volumeMounts:
             - name: dhis-conf-rw
