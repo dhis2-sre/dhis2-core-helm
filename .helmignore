@@ -21,3 +21,9 @@
 .idea/
 *.tmproj
 .vscode/
+*.tgz
+*.tgz.prov
+.env
+.env.example
+.envrc
+README.md
