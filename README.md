@@ -1,11 +1,21 @@
 # DHIS2 Core Helm Chart
 
-## Package
+## Launch
+
 ```bash
-helm package --sign --key 'helm' --keyring ~/.gnupg/pubring.gpg .
+skaffold dev
 ```
 
-## Post to repository
+## Helm
+
+### Package
+
+```bash
+helm package .
+```
+
+### Post to repository
+
 ```bash
 curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
         -F "chart=@dhis2-core-0.2.0.tgz" \
