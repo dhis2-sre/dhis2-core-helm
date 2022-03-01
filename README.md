@@ -1,5 +1,11 @@
 # DHIS2 Core Helm Chart
 
+## Configuration
+
+Ensure the `KUBECONFIG` environment variable is pointing to a valid Kubernetes configuration file.
+
+If you don't have a cluster available, one can be created using [this](https://github.com/dhis2-sre/im-cluster) project.
+
 ## Launch
 
 ```bash
