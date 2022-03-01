@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta25
+kind: Config
+deploy:
+  statusCheckDeadlineSeconds: 300
+  helm:
+    releases:
+      - name: dhis2-core
+        namespace: whoami
+        createNamespace: true
+        chartPath: .
+        valuesFiles:
+          - values/dhis2.yaml
+
+      - name: dhis2-postgresql
+        namespace: whoami
+        createNamespace: true
+        remoteChart: postgresql
+        repo: https://charts.bitnami.com/bitnami
+        version: 11.0.4
+        valuesFiles:
+          - values/postgresql.yaml

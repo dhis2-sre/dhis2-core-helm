@@ -1,0 +1,25 @@
+image:
+  repository: dhis2/core
+  tag: 2.36.0-tomcat-8.5.34-jre8-alpine
+ingress:
+  enabled: true
+  hostname: dhis2.dev.test.c.dhis2.org
+  path: /
+  certIssuer: cert-issuer-prod
+catalinaOpts: "-Dcontext.path=/"
+livenessProbe:
+  initialDelaySeconds: 180
+  path: /
+readinessProbe:
+  initialDelaySeconds: 180
+  path: /
+dhisConfig: |
+  connection.dialect = org.hibernate.dialect.PostgreSQLDialect
+  connection.driver_class = org.postgresql.Driver
+  connection.url = jdbc:postgresql://dhis2-postgresql.whoami.svc/dhis2
+  connection.username = dhis
+  connection.password = dhis
+  # Database schema behavior, can be validate, update, create, create-drop
+  connection.schema = update
+  # Server base URL
+  server.base.url = https://dhis2.dev.test.c.dhis2.org/

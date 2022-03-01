@@ -1,0 +1,21 @@
+primary:
+  initdb:
+    scripts:
+      seed.sh: |
+        #!/usr/bin/env bash
+
+        set -euo pipefail
+
+        ABSOLUTE_SEED_URL="https://databases.dhis2.org/sierra-leone/2.36.0/dhis2-db-sierra-leone.sql.gz"
+        curl -L "$ABSOLUTE_SEED_URL" -o /tmp/t$$ | cat
+        gunzip -c /tmp/t$$ > /tmp/t$$-seed-data
+        psql -U postgres -d dhis2 -p 5432 -f /tmp/t$$-seed-data
+        rm /tmp/t$$ /tmp/t$$-seed-data
+
+auth:
+  username: dhis
+  password: dhis
+  database: dhis2
+
+persistence:
+  size: 5Gi
