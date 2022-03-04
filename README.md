@@ -16,6 +16,8 @@ skaffold dev
 
 ### Package
 
+> NOTE: Remember to bump the chart version specified in [Chart.yaml](./Chart.yaml)
+
 ```bash
 helm package .
 ```
@@ -24,7 +26,6 @@ helm package .
 
 ```bash
 curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
-        -F "chart=@dhis2-core-0.2.0.tgz" \
-        -F "prov=@dhis2-core-0.2.0.tgz.prov" \
+        -F "chart=@dhis2-core-0.5.0.tgz" \
         https://helm-charts.fitfit.dk/api/charts
 ```
