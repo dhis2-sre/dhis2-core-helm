@@ -8,10 +8,10 @@ ingress:
   certIssuer: cert-issuer-prod
 catalinaOpts: "-Dcontext.path=/"
 livenessProbe:
-  initialDelaySeconds: 180
+  initialDelaySeconds: 300
   path: /
 readinessProbe:
-  initialDelaySeconds: 180
+  initialDelaySeconds: 300
   path: /
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect

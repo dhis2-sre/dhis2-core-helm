@@ -1,7 +1,7 @@
 apiVersion: skaffold/v2beta25
 kind: Config
 deploy:
-  statusCheckDeadlineSeconds: 300
+  statusCheckDeadlineSeconds: 420
   helm:
     releases:
       - name: dhis2-core
