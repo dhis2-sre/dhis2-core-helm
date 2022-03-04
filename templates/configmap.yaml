@@ -9,3 +9,16 @@ data:
     {{- .Values.dhisConfig | nindent 4 }}
   server.xml: |
     {{- .Files.Get .Values.serverXml | nindent 4 }}
+  dhis-google-auth.json: |
+    {
+      "type": "service_account",
+      "project_id": "{{ .Values.googleAuth.projectId }}",
+      "private_key_id": "{{ .Values.googleAuth.privateKeyId }}",
+      "private_key": "{{ .Values.googleAuth.privateKey }}",
+      "client_email": "{{ .Values.googleAuth.clientEmail }}",
+      "client_id": "{{ .Values.googleAuth.clientId }}",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dhis2-demo%40dhis2-gis.iam.gserviceaccount.com"
+    }

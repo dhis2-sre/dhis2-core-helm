@@ -33,12 +33,15 @@ spec:
       initContainers:
         - name: copy-ro-config
           image: busybox
-          command: ['sh', '-c', 'cp -v /dhis-conf-ro/* /dhis-conf-rw/ && cp -v /server-xml-ro/* /server-xml-rw/']
+          command: ['sh', '-c', 'cp -v /dhis-conf-ro/* /dhis-conf-rw/ && cp -v /dhis-google-auth-json-ro/* /dhis-conf-rw/ && cp -v /server-xml-ro/* /server-xml-rw/']
           volumeMounts:
             - name: dhis-conf-ro
               mountPath: /dhis-conf-ro
             - name: dhis-conf-rw
               mountPath: /dhis-conf-rw
+
+            - name: dhis-google-auth-json-ro
+              mountPath: /dhis-google-auth-json-ro
 
             - name: server-xml-rw
               mountPath: /server-xml-rw
@@ -86,6 +89,13 @@ spec:
             items:
               - key: dhis.conf
                 path: dhis.conf
+
+        - name: dhis-google-auth-json-ro
+          configMap:
+            name: {{ include "dhis2-core-helm.fullname" . }}
+            items:
+              - key: dhis-google-auth.json
+                path: dhis-google-auth.json
 
         - name: server-xml-rw
           emptyDir: {}

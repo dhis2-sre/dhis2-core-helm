@@ -2,6 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+googleAuth:
+  projectId: ""
+  privateKeyId: ""
+  privateKey: ""
+  clientEmail: ""
+  clientId: ""
+
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect
   connection.driver_class = org.postgresql.Driver
