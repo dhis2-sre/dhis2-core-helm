@@ -26,6 +26,6 @@ helm package .
 
 ```bash
 curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
-        -F "chart=@dhis2-core-0.5.0.tgz" \
+        -F "chart=@dhis2-core-0.6.0.tgz" \
         https://helm-charts.fitfit.dk/api/charts
 ```
