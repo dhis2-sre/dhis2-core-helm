@@ -56,6 +56,8 @@ spec:
           env:
             - name: CATALINA_OPTS
               value: {{ .Values.catalinaOpts }}
+            - name: JAVA_OPTS
+              value: {{ .Values.javaOpts }}
           ports:
             - name: http
               containerPort: 8080
