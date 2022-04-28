@@ -137,6 +137,7 @@
                     appBase="webapps"
                     unpackWARs="false"
                     autoDeploy="false"
+                    deployOnStartup="false"
             >
 
                 <Context path="${context.path}" docBase="ROOT/" />
