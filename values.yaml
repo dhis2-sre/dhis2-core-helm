@@ -19,7 +19,7 @@ dhisConfig: |
   connection.schema = update
 
 serverXml: config/server.xml
-catalinaOpts: "-Dcontext.path=/"
+catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
 
 livenessProbe:
