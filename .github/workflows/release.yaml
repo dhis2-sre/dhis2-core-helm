@@ -85,6 +85,8 @@ jobs:
       - name: Git...
         run: |
           git checkout -b tmp v${{ env.VERSION }}
+          git checkout master
+          git merge tmp
 
       - uses: EndBug/add-and-commit@v9
         if: startsWith(github.ref, 'refs/tags/v')
