@@ -88,6 +88,7 @@ jobs:
           git commit .cr-index/index.yaml -m "Update helm repository index"
           git checkout master
           git merge tmp
+          git push
 
 #      - uses: EndBug/add-and-commit@v9
 #        if: startsWith(github.ref, 'refs/tags/v')
