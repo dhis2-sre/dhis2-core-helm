@@ -87,7 +87,6 @@ jobs:
           git status
           git branch
           git checkout master
-          git merge "v${{ env.VERSION }}"
 
       - uses: EndBug/add-and-commit@v9
         if: startsWith(github.ref, 'refs/tags/v')
