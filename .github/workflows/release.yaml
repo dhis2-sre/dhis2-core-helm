@@ -41,6 +41,7 @@ jobs:
           BINARY: yq_linux_amd64
 
       - name: Update chart version
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           TARGET=./Chart.yaml
           yq -i e ".version = \"${{ env.VERSION }}\"" $TARGET
