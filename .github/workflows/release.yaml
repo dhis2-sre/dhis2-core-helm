@@ -54,14 +54,36 @@ jobs:
         run: helm package .
 
       - name: Configure Git
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Run chart-releaser
+      - name: Setup Chart Releaser
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: helm/chart-releaser-action@v1.4.0
-        with:
-          charts_dir: .
+        run: |
+          wget https://github.com/helm/chart-releaser/releases/download/v${VERSION}/chart-releaser_${VERSION}_linux_amd64.tar.gz -O ./cr.tar.gz
+          tar -zxvf ./cr.tar.gz cr
+          chmod +x cr
         env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          VERSION: 1.2.0
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: ./cr upload --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --token $GH_TOKEN
+        env:
+          GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+
+      - name: Update Helm Repository
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: ./cr index --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --push --token $GH_TOKEN --charts-repo https://github.com/dhis2-sre/dhis2-core-helm
+        env:
+          GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+
+#      - name: Run chart-releaser
+#        if: startsWith(github.ref, 'refs/tags/v')
+#        uses: helm/chart-releaser-action@v1.4.0
+#        with:
+#          charts_dir: .
+#        env:
+#          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
