@@ -1,0 +1,64 @@
+name: Release Chart
+
+on:
+  push:
+    branches:
+      - master
+      - feature/**
+    tags:
+      - v*.*.*
+
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Find version
+        run: |
+          # Strip git ref prefix from version
+          STRIPPED_REF=${GITHUB_REF##refs/*/}
+
+          # Strip "v" prefix from tag name
+          VERSION=${STRIPPED_REF#v}
+
+          # Export
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+          echo "VERSION=$VERSION"
+
+      - name: Setup yq
+        run: |
+          wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq
+          chmod +x /usr/bin/yq
+        env:
+          VERSION: v4.2.0
+          BINARY: yq_linux_amd64
+
+      - name: Update chart version
+        run: |
+          TARGET=./Chart.yaml
+          yq -i e ".version = \"${{ env.VERSION }}\"" $TARGET
+          [ "$(git diff --exit-code $TARGET)" != "0" ]
+
+      - name: Helm Lint
+        run: helm lint .
+
+      - name: Helm package
+        run: helm package .
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Run chart-releaser
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: helm/chart-releaser-action@v1.4.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
