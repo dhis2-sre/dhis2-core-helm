@@ -70,7 +70,9 @@ jobs:
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: ./cr upload --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --token $GH_TOKEN
+        run: |
+          mkdir -p .cr-index/
+          ./cr upload --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --token $GH_TOKEN
         env:
           GH_TOKEN: "${{ secrets.GH_TOKEN }}"
 
