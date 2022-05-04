@@ -63,7 +63,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           wget https://github.com/helm/chart-releaser/releases/download/v${VERSION}/chart-releaser_${VERSION}_linux_amd64.tar.gz -O ./cr.tar.gz
-          tar -zxvf ./cr.tar.gz cr
+          tar -xvf ./cr.tar.gz cr
           chmod +x cr
         env:
           VERSION: 1.2.0
