@@ -94,6 +94,7 @@ jobs:
           default_author: github_actions
           message: Update index
           add: .cr-index/index.yaml
+          push: origin HEAD:master
 
 #      - name: Run chart-releaser
 #        if: startsWith(github.ref, 'refs/tags/v')
