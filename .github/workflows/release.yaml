@@ -72,16 +72,13 @@ jobs:
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          mkdir -p .cr-index/
-          ./cr upload --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --token $GH_TOKEN
+        run: ./cr upload --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --token $GH_TOKEN
         env:
           GH_TOKEN: "${{ secrets.GH_TOKEN }}"
 
       - name: Update Helm Repository
         if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          ./cr index --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --push --token $GH_TOKEN --charts-repo https://github.com/dhis2-sre/dhis2-core-helm
+        run: ./cr index --git-repo dhis2-core-helm --owner dhis2-sre --package-path . --push --token $GH_TOKEN --charts-repo https://github.com/dhis2-sre/dhis2-core-helm
         env:
           GH_TOKEN: "${{ secrets.GH_TOKEN }}"
 
@@ -93,7 +90,7 @@ jobs:
         with:
           default_author: github_actions
           message: Update helm repository index
-          add: .cr-index/index.yaml --allow-empty
+          add: ".cr-index/index.yaml --allow-empty"
           push: origin HEAD:master
 
 #      - name: Run chart-releaser
