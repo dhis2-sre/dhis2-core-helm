@@ -7,7 +7,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+    {{- include "dhis2-core-helm.labels.fakelabel" . | nindent 4 }}
   annotations:
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
