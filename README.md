@@ -14,7 +14,8 @@ skaffold dev
 
 ## Helm
 
-DHIS2 core helm chart is published to https://dhis2-sre.github.io/dhis2-core-helm
+[DHIS2 core helm chart](./charts/core) is published to
+https://dhis2-sre.github.io/dhis2-core-helm
 
 To install the chart you first need to add this chart repository
 
@@ -23,6 +24,9 @@ helm add repo dhis2 https://dhis2-sre.github.io/dhis2-core-helm
 helm repo update
 helm search repo --versions dhis2 
 ```
+
+The versions returned are gathered from [index.yaml](./index.yaml) which is
+published to [this GitHub page](https://dhis2-sre.github.io/dhis2-core-helm/index.yaml).
 
 ### Package
 
