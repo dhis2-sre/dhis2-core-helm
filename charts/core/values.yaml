@@ -17,7 +17,7 @@ dhisConfig: |
   connection.password = dhis
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
-  unused.config = values
+  unused.config = false
 
 serverXml: config/server.xml
 catalinaOpts: "-Dcontext.path=''"
