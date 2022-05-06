@@ -20,13 +20,16 @@ https://dhis2-sre.github.io/dhis2-core-helm
 To install the chart you first need to add this chart repository
 
 ```sh
-helm add repo dhis2 https://dhis2-sre.github.io/dhis2-core-helm
+helm repo add dhis2 https://dhis2-sre.github.io/dhis2-core-helm
 helm repo update
-helm search repo --versions dhis2 
+helm search repo dhis2/core --versions
 ```
 
 The versions returned are gathered from [index.yaml](./index.yaml) which is
 published to [this GitHub page](https://dhis2-sre.github.io/dhis2-core-helm/index.yaml).
+
+Note: there might be a slight delay between the release and the `index.yaml`
+file being updated as GitHub pages have to be re-deployed.
 
 ### Package
 
