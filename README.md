@@ -28,21 +28,18 @@ helm search repo dhis2/core --versions
 The versions returned are gathered from [index.yaml](./index.yaml) which is
 published to [this GitHub page](https://dhis2-sre.github.io/dhis2-core-helm/index.yaml).
 
+### Release
+
+Bump the version in [Chart.yaml](./charts/core/Chart.yaml), commit and push.
+**NOTE: do not create a tag yourself!**
+
+Our release workflow will then using [Helm chart releaser action](https://github.com/helm/chart-releaser-action)
+
+* create a tag core-<version>
+* create a [release](https://github.com/dhis2-sre/dhis2-core-helm/releases) associated with the new tag
+* commit an updated index.yaml with the new release
+* redeploy the GitHub pages to serve the new index.yaml
+
 Note: there might be a slight delay between the release and the `index.yaml`
 file being updated as GitHub pages have to be re-deployed.
 
-### Package
-
-> NOTE: Remember to bump the chart version specified in [Chart.yaml](./charts/core/Chart.yaml)
-
-```bash
-helm package .
-```
-
-### Post to repository
-
-```bash
-curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
-        -F "chart=@dhis2-core-0.6.0.tgz" \
-        https://helm-charts.fitfit.dk/api/charts
-```
