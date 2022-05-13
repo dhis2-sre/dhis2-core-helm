@@ -18,4 +18,4 @@ deploy:
         repo: https://charts.bitnami.com/bitnami
         version: 11.0.4
         valuesFiles:
-          - values/postgresql.yaml
+          - charts/core/values/postgresql.yaml
