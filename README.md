@@ -35,7 +35,7 @@ Bump the version in [Chart.yaml](./charts/core/Chart.yaml), commit and push.
 
 Our release workflow will then using [Helm chart releaser action](https://github.com/helm/chart-releaser-action)
 
-* create a tag core-<version>
+* create a tag `core-<version>`
 * create a [release](https://github.com/dhis2-sre/dhis2-core-helm/releases) associated with the new tag
 * commit an updated index.yaml with the new release
 * redeploy the GitHub pages to serve the new index.yaml
