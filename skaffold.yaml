@@ -7,9 +7,9 @@ deploy:
       - name: dhis2-core
         namespace: whoami
         createNamespace: true
-        chartPath: .
+        chartPath: charts/core
         valuesFiles:
-          - values/dhis2.yaml
+          - charts/core/values/dhis2.yaml
 
       - name: dhis2-postgresql
         namespace: whoami
