@@ -11,6 +11,13 @@ spec:
   selector:
     matchLabels:
       {{- include "dhis2-core-helm.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.strategy.type }}
+    {{- if eq .Values.strategy.type "RollingUpdate" }}
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+    {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
