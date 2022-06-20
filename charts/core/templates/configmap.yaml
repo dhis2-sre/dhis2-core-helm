@@ -14,7 +14,7 @@ data:
       "type": "service_account",
       "project_id": "{{ .Values.googleAuth.projectId }}",
       "private_key_id": "{{ .Values.googleAuth.privateKeyId }}",
-      "private_key": "{{ .Values.googleAuth.privateKey }}",
+      "private_key": "{{ .Values.googleAuth.privateKey | squote }}",
       "client_email": "{{ .Values.googleAuth.clientEmail }}",
       "client_id": "{{ .Values.googleAuth.clientId }}",
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
