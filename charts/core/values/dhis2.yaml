@@ -7,11 +7,16 @@ ingress:
   path: /
   certIssuer: cert-issuer-prod
 catalinaOpts: "-Dcontext.path=/"
+startupProbe: # 5 minutes (30 * 10 = 300s)
+  failureThreshold: 30
+  periodSeconds: 10
+  path: /
 livenessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 0
+  periodSeconds: 10
   path: /
 readinessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 0
   path: /
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect

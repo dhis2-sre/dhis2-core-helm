@@ -22,11 +22,16 @@ serverXml: config/server.xml
 catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
 
+startupProbe: # 5 minutes (30 * 10 = 300s)
+  failureThreshold: 30
+  periodSeconds: 10
+  path: /
 livenessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 0
+  periodSeconds: 10
   path: /
 readinessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 0
   path: /
 
 replicaCount: 1

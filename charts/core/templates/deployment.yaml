@@ -69,8 +69,15 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          startupProbe:
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            httpGet:
+              path: {{ .Values.startupProbe.path }}
+              port: http
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: http
