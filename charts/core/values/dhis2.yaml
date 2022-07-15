@@ -12,10 +12,8 @@ startupProbe: # 2min10s (26 * 5 = 130s)
   periodSeconds: 5
   path: /
 livenessProbe:
-  initialDelaySeconds: 0
   path: /
 readinessProbe:
-  initialDelaySeconds: 0
   path: /
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect

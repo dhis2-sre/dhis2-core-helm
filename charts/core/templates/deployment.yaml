@@ -76,12 +76,10 @@ spec:
               path: {{ .Values.startupProbe.path }}
               port: http
           livenessProbe:
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: http
           readinessProbe:
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             httpGet:
               path: {{ .Values.readinessProbe.path }}
               port: http
