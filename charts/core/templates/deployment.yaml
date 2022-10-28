@@ -90,7 +90,7 @@ spec:
               port: http
           volumeMounts:
             - name: dhis-conf-rw
-              mountPath: /DHIS2_home
+              mountPath: {{ .Values.dhis2Home }}
               readOnly: false
             - name: server-xml-rw
               mountPath: /usr/local/tomcat/conf/server.xml
@@ -100,7 +100,7 @@ spec:
       volumes:
 
         - name: dhis-conf-rw
-          emptyDir: {}
+          emptyDir: { }
         - name: dhis-conf-ro
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
