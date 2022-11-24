@@ -81,6 +81,7 @@ spec:
               path: {{ .Values.startupProbe.path }}
               port: http
           livenessProbe:
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: http
