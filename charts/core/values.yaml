@@ -30,6 +30,7 @@ startupProbe: # 2min10s (26 * 5 = 130s)
   periodSeconds: 5
   path: /
 livenessProbe:
+  timeoutSeconds: 1
   path: /
 readinessProbe:
   path: /
