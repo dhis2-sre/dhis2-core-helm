@@ -19,9 +19,12 @@ dhisConfig: |
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
 
-dhis2Home: /DHIS2_home
+dhis2Home: /opt/dhis2
+
+log4j2: config/log4j2.xml
 
 serverXml: config/server.xml
+
 catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
 
