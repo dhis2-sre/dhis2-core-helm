@@ -11,11 +11,32 @@ primary:
 
         set -euo pipefail
 
-        ABSOLUTE_SEED_URL="https://databases.dhis2.org/sierra-leone/2.36.0/dhis2-db-sierra-leone.sql.gz"
-        curl -L "$ABSOLUTE_SEED_URL" -o /tmp/t$$ | cat
-        gunzip -c /tmp/t$$ > /tmp/t$$-seed-data
-        psql -U postgres -d dhis2 -p 5432 -f /tmp/t$$-seed-data
-        rm /tmp/t$$ /tmp/t$$-seed-data
+        export PGPASSWORD=$POSTGRES_POSTGRES_PASSWORD
+
+        function exec_psql() {
+          psql -U postgres -qAt -d dhis2 -c "$1"
+        }
+
+        table_exists=$(exec_psql "select exists (select from information_schema.tables where table_schema = 'schema_name' and table_name = 'table_name')")
+        if [[ $table_exists = true ]]; then
+          row_count=$(exec_psql "select count(*) from organisationunit")
+          if [[ $row_count -ne 0 ]]; then
+            echo "Seeding aborted!"
+            exit 0
+          fi
+        fi
+
+        SEED_URL="https://databases.dhis2.org/sierra-leone/2.39.0/dhis2-db-sierra-leone.sql.gz"
+        echo "Seed url: $SEED_URL"
+        tmp_file=$(mktemp)
+        curl --connect-timeout 10 --retry 5 --retry-delay 1 --fail -L "$SEED_URL" > "$tmp_file"
+        gunzip -v -c "$tmp_file" | psql -U postgres -d dhis2
+        rm $tmp_file
+
+        exec_psql "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO dhis"
+        exec_psql "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO dhis"
+        # At some point we need to grant access to view while deploying using IM, I'm leaving the below here as an easy fix in case the problem shows up here
+        #psql -At -d dhis2 -c "SELECT 'GRANT ALL ON '||viewname||' TO dhis;' FROM pg_views WHERE schemaname='public';" | psql -d dhis2
 
 auth:
   username: dhis
