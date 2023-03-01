@@ -1,6 +1,6 @@
 image:
   repository: dhis2/core
-  tag: 2.39.0
+  tag: 2.39.1.1
 ingress:
   enabled: true
   hostname: dhis2.dev.test.c.dhis2.org
