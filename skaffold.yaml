@@ -11,7 +11,7 @@ deploy:
         repo: https://charts.bitnami.com/bitnami
         version: 11.9.8
         valuesFiles:
-          - charts/core/values/postgresql.yaml
+          - ./postgresql.yaml
 
       - name: dhis2-core
         namespace: whoami
