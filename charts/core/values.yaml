@@ -49,7 +49,7 @@ image:
   repository: dhis2/core
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2.39.0
+  tag: 2.39.1.1
 
 imagePullSecrets: []
 nameOverride: ""
