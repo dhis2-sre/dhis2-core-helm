@@ -17,15 +17,6 @@ primary:
           psql -U postgres -qAt -d dhis2 -c "$1"
         }
 
-        table_exists=$(exec_psql "select exists (select from information_schema.tables where table_schema = 'schema_name' and table_name = 'table_name')")
-        if [[ $table_exists = true ]]; then
-          row_count=$(exec_psql "select organisationunitid from organisationunit limit 1")
-          if [[ $row_count -ne 0 ]]; then
-            echo "Seeding aborted!"
-            exit 0
-          fi
-        fi
-
         SEED_URL="https://databases.dhis2.org/sierra-leone/2.39.0/dhis2-db-sierra-leone.sql.gz"
         echo "Seed url: $SEED_URL"
         tmp_file=$(mktemp)
