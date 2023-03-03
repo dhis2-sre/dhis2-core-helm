@@ -43,12 +43,14 @@ spec:
       initContainers:
         - name: copy-ro-config
           image: busybox
-          command: ['sh', '-c', 'cp -v /dhis-conf-ro/* /dhis-conf-rw/ && cp -v /dhis-google-auth-json-ro/* /dhis-conf-rw/ && cp -v /server-xml-ro/* /server-xml-rw/']
+          command: [ 'sh', '-c', 'cp -v /dhis-conf-ro/* /dhis-conf-rw/ && cp -v /log4j2-xml-ro/* /dhis-conf-rw/ && cp -v /dhis-google-auth-json-ro/* /dhis-conf-rw/ && cp -v /server-xml-ro/* /server-xml-rw/' ]
           volumeMounts:
             - name: dhis-conf-ro
               mountPath: /dhis-conf-ro
             - name: dhis-conf-rw
               mountPath: /dhis-conf-rw
+            - name: log4j2-xml-ro
+              mountPath: /log4j2-xml-ro
 
             - name: dhis-google-auth-json-ro
               mountPath: /dhis-google-auth-json-ro
@@ -67,7 +69,7 @@ spec:
             - name: CATALINA_OPTS
               value: {{ .Values.catalinaOpts }}
             - name: JAVA_OPTS
-              value: {{ .Values.javaOpts }}
+              value: "-Dlog4j2.configurationFile={{ .Values.dhis2Home }}/log4j2.xml {{ .Values.javaOpts }}"
             - name: DHIS2_HOME
               value: {{ .Values.dhis2Home }}
           ports:
@@ -96,6 +98,9 @@ spec:
             - name: server-xml-rw
               mountPath: /usr/local/tomcat/conf/server.xml
               subPath: server.xml
+            - name: log4j2-xml-ro
+              mountPath: {{ .Values.dhis2Home }}/log4j2.xml
+              subPath: log4j2.xml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -117,13 +122,20 @@ spec:
                 path: dhis-google-auth.json
 
         - name: server-xml-rw
-          emptyDir: {}
+          emptyDir: { }
         - name: server-xml-ro
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
             items:
               - key: server.xml
                 path: server.xml
+
+        - name: log4j2-xml-ro
+          configMap:
+            name: {{ include "dhis2-core-helm.fullname" . }}
+            items:
+              - key: log4j2.xml
+                path: log4j2.xml
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

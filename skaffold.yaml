@@ -4,18 +4,18 @@ deploy:
   statusCheckDeadlineSeconds: 420
   helm:
     releases:
+      - name: dhis2-postgresql
+        namespace: whoami
+        createNamespace: true
+        remoteChart: postgresql
+        repo: https://charts.bitnami.com/bitnami
+        version: 11.9.8
+        valuesFiles:
+          - ./postgresql.yaml
+
       - name: dhis2-core
         namespace: whoami
         createNamespace: true
         chartPath: charts/core
         valuesFiles:
           - charts/core/values/dhis2.yaml
-
-      - name: dhis2-postgresql
-        namespace: whoami
-        createNamespace: true
-        remoteChart: postgresql
-        repo: https://charts.bitnami.com/bitnami
-        version: 11.0.4
-        valuesFiles:
-          - charts/core/values/postgresql.yaml

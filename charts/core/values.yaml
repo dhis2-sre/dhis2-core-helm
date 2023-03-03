@@ -19,9 +19,12 @@ dhisConfig: |
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
 
-dhis2Home: /DHIS2_home
+dhis2Home: /opt/dhis2
+
+log4j2: config/log4j2.xml
 
 serverXml: config/server.xml
+
 catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
 
@@ -47,7 +50,7 @@ image:
   repository: dhis2/core
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2.36.0-tomcat-8.5.34-jre8-alpine
+  tag: 2.39.1.1
 
 imagePullSecrets: []
 nameOverride: ""
