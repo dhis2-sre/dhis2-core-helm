@@ -17,7 +17,7 @@ primary:
           psql -U postgres -qAt -d dhis2 -c "$1"
         }
 
-        SEED_URL="https://databases.dhis2.org/sierra-leone/2.39.0/dhis2-db-sierra-leone.sql.gz"
+        SEED_URL="https://databases.dhis2.org/sierra-leone/2.39.1/dhis2-db-sierra-leone.sql.gz"
         echo "Seed url: $SEED_URL"
         tmp_file=$(mktemp)
         curl --connect-timeout 10 --retry 5 --retry-delay 1 --fail -L "$SEED_URL" > "$tmp_file"
