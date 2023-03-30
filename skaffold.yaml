@@ -17,5 +17,5 @@ deploy:
         namespace: dhis2
         createNamespace: true
         chartPath: charts/core
-        valuesFiles:
-          - charts/core/values/dhis2.yaml
+#        valuesFiles:
+#          - ./dhis2.yaml
