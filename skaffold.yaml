@@ -5,7 +5,7 @@ deploy:
   helm:
     releases:
       - name: dhis2-postgresql
-        namespace: whoami
+        namespace: dhis2
         createNamespace: true
         remoteChart: postgresql
         repo: https://charts.bitnami.com/bitnami
@@ -14,7 +14,7 @@ deploy:
           - ./postgresql.yaml
 
       - name: dhis2-core
-        namespace: whoami
+        namespace: dhis2
         createNamespace: true
         chartPath: charts/core
         valuesFiles:
