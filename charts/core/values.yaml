@@ -13,11 +13,13 @@ googleAuth:
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect
   connection.driver_class = org.postgresql.Driver
-  connection.url = jdbc:postgresql://dhis2-core-database-postgresql.dhis2-core.svc.cluster.local/dhis2
+  connection.url = jdbc:postgresql://dhis2-postgresql.dhis2.svc/dhis2
   connection.username = dhis
   connection.password = dhis
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
+  # Server base URL
+  server.base.url = https://dhis2-core.127.0.0.1.nip.io/
 
 dhis2Home: /opt/dhis2
 
