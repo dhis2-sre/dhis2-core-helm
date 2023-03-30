@@ -24,4 +24,4 @@ dhisConfig: |
   # Database schema behavior, can be validate, update, create, create-drop
   connection.schema = update
   # Server base URL
-  server.base.url = https://dhis2.dev.test.c.dhis2.org/
+  server.base.url = https://dhis2-core.127.0.0.1.nip.io/
