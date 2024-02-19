@@ -18,6 +18,7 @@ spec:
       maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
       maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
     {{- end }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
