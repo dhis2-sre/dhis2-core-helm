@@ -30,7 +30,7 @@ serverXml: config/server.xml
 catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
 
-minReadySeconds: 0
+minReadySeconds: 120
 startupProbe: # 2min10s (26 * 5 = 130s)
   failureThreshold: 26
   periodSeconds: 5
