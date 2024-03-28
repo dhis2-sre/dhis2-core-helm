@@ -3,6 +3,11 @@
 # Declare variables to be passed into your templates.
 commonLabels: {}
 
+storage:
+  persisted: true
+  volumeSize: 8Gi
+  className: ~
+
 googleAuth:
   projectId: ""
   privateKeyId: ""
@@ -53,7 +58,7 @@ image:
   repository: dhis2/core
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2.39.1.1
+  tag: 2.40.2
 
 imagePullSecrets: []
 nameOverride: ""

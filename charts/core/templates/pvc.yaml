@@ -1,0 +1,15 @@
+{{- if .Values.storage.persisted }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "dhis2-core-helm.fullname" . }}
+  labels:
+    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.volumeSize }}
+  storageClassName: {{ .Values.storage.className }}
+{{- end }}
