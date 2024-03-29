@@ -84,26 +84,21 @@ spec:
             - name: dhis-home
               mountPath: {{ .Values.dhis2Home }}
               readOnly: false
-
             - name: dhis-conf
               mountPath: {{ .Values.dhis2Home }}/dhis.conf
               subPath: dhis.conf
-
             - name: google-auth-json
               mountPath: {{ .Values.dhis2Home }}/dhis-google-auth.json
               subPath: dhis-google-auth.json
-
             - name: log4j2-xml
               mountPath: {{ .Values.dhis2Home }}/log4j2.xml
               subPath: log4j2.xml
-
             - name: server-xml
               mountPath: /usr/local/tomcat/conf/server.xml
               subPath: server.xml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-
         - name: dhis-home
 {{- if .Values.storage.persisted }}
           persistentVolumeClaim:
@@ -111,35 +106,30 @@ spec:
 {{ else }}
           emptyDir: { }
 {{- end }}
-
         - name: dhis-conf
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
             items:
               - key: dhis.conf
                 path: dhis.conf
-
         - name: google-auth-json
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
             items:
               - key: dhis-google-auth.json
                 path: dhis-google-auth.json
-
         - name: server-xml
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
             items:
               - key: server.xml
                 path: server.xml
-
         - name: log4j2-xml
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
             items:
               - key: log4j2.xml
                 path: log4j2.xml
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
