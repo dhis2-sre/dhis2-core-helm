@@ -5,7 +5,7 @@ commonLabels: {}
 
 storage:
   persisted: true
-  volumeSize: 8Gi
+  volumeSize: 1Gi
   className: ~
 
 googleAuth:
