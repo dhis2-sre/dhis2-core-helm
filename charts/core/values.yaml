@@ -11,7 +11,7 @@ storage:
 googleAuth:
   projectId: ""
   privateKeyId: ""
-  privateKey: ""
+  privateKey: '' # Use single quotes if the string contains \n or other characters which shouldn't be evaluated by helm
   clientEmail: ""
   clientId: ""
 
