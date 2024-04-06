@@ -51,7 +51,7 @@ replicaCount: 1
 strategy:
   type: RollingUpdate
   rollingUpdate:
-    maxSurge: 1
+    partition: 0
     maxUnavailable: 0
 
 image:
