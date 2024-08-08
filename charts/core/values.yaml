@@ -44,6 +44,7 @@ livenessProbe:
   timeoutSeconds: 1
   path: /
 readinessProbe:
+  timeoutSeconds: 1
   path: /
 
 replicaCount: 1
