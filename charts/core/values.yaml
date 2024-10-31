@@ -286,6 +286,13 @@ configMaps:
     data:
       DHIS2_JVM_HEAP: 4G
       DHIS2_MONITORING_API: 'off'
+      DHIS2_DB_PORT: 5432
+      DHIS2_DB_NAME: dhis2
+      DHIS2_DB_USER: dhis2
+      DHIS2_DB_PASS: dhis2
+      DHIS2_DB_HOST: "dhis2app-postgresql.default.svc.cluster.local"
+      DHIS2_MONITORING_URL: "http://localhost"
+
 
 dhis2Home: /opt/dhis2
 
