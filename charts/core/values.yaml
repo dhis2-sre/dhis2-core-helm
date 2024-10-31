@@ -22,7 +22,7 @@ dhisConfig: |
   connection.username = dhis
   connection.password = dhis
   # Server base URL
-  server.base.url = https://{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local/
+  server.base.url = https://{{ .Release.Name | lower }}.{{ .Release.Namespace | lower }}.svc.cluster.local/
 
 configMaps:
   - name: dhisConfigEnv
@@ -101,7 +101,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: "{{ .Release.Name}}.{{ .Release.Namespace }}.svc.cluster.local"
+  hostname: "{{ .Release.Name | lower }}.{{ .Release.Namespace | lower }}.svc.cluster.local"
   path: /
   # certIssuer: letsencrypt-staging | letsencrypt-prod
   annotations: {}
