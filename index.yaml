@@ -3,6 +3,25 @@ entries:
   core:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-10-31T19:15:27.841268366Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 6272283570f01fdf54d0941d38908a3067de1648e1e95368fe2e20ab3e6ee275
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.6/core-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-10-31T14:52:13.36948477Z"
     dependencies:
     - condition: redis.enabled
@@ -115,4 +134,4 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.0/core-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-31T14:52:13.369731058Z"
+generated: "2024-10-31T19:15:27.841298412Z"
