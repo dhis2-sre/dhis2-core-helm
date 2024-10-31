@@ -74,11 +74,11 @@ spec:
               value: "-Dlog4j2.configurationFile={{ .Values.dhis2Home }}/log4j2.xml {{ .Values.javaOpts }}"
             - name: DHIS2_HOME
               value: {{ .Values.dhis2Home }}
-          envFrom: |-
+          envFrom:
             {{- range .Values.configMaps }}
             - configMapRef:
-              name: {{- .name -}}
-              optional: false
+                name: {{ .name }}
+                optional: false
             {{- end }}
           ports:
             - name: http
