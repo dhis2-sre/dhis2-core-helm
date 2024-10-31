@@ -1,4 +1,4 @@
-# Default values for dhis2-core-helm.
+# Default values for dhis2-helm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 commonLabels: {}
@@ -18,19 +18,25 @@ googleAuth:
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect
   connection.driver_class = org.postgresql.Driver
-  connection.url = jdbc:postgresql://dhis2-postgresql.dhis2.svc/dhis2
+  connection.url = jdbc:postgresql://postgresql/dhis2
   connection.username = dhis
   connection.password = dhis
-  # Database schema behavior, can be validate, update, create, create-drop
-  connection.schema = update
   # Server base URL
-  server.base.url = https://dhis2-core.127.0.0.1.nip.io/
+  server.base.url = https://{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local/
+
+configMaps:
+  - name: dhisConfigEnv
+    data:
+      DHIS2_JVM_HEAP: 4G
+      DHIS2_MONITORING_API: 'off'
 
 dhis2Home: /opt/dhis2
 
 log4j2: config/log4j2.xml
 
 serverXml: config/server.xml
+
+contextXml: config/context.xml
 
 catalinaOpts: "-Dcontext.path=''"
 javaOpts: ""
@@ -55,10 +61,10 @@ strategy:
     maxUnavailable: 0
 
 image:
-  repository: dhis2/core
+  repository: talexie/dhis2
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2.40.2
+  tag: 41.1.0-jdk17-t9
 
 imagePullSecrets: []
 nameOverride: ""
@@ -95,7 +101,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: dhis2-core.127.0.0.1.nip.io
+  hostname: "{{ .Release.Name}}.{{ .Release.Namespace }}.svc.cluster.local"
   path: /
   # certIssuer: letsencrypt-staging | letsencrypt-prod
   annotations: {}
@@ -126,3 +132,18 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+redis:
+  enabled: false
+  auth:
+    enabled: false
+
+postgresql:
+  enabled: false
+  auth:
+    database: dhis2
+    password: dhis2
+    username: dhis2
+    postgresPassword: password
+  backup:
+    enabled: true

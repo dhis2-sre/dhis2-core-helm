@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "dhis2-core-helm.fullname" . -}}
+{{- $fullName := include "dhis2-helm.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- $tls := hasKey .Values.ingress "certIssuer" -}}
 apiVersion: networking.k8s.io/v1
@@ -7,7 +7,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+    {{- include "dhis2-helm.labels" . | nindent 4 }}
   annotations:
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "dhis2-core-helm.fullname" . }}
+  name: {{ include "dhis2-helm.fullname" . }}
   labels:
-    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+    {{- include "dhis2-helm.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "dhis2-core-helm.fullname" . }}-hl
+  serviceName: {{ include "dhis2-helm.fullname" . }}-hl
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
-      {{- include "dhis2-core-helm.selectorLabels" . | nindent 6 }}
+      {{- include "dhis2-helm.selectorLabels" . | nindent 6 }}
   updateStrategy:
     type: {{ .Values.strategy.type }}
     {{- if eq .Values.strategy.type "RollingUpdate" }}
@@ -27,7 +27,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "dhis2-core-helm.selectorLabels" . | nindent 8 }}
+        {{- include "dhis2-helm.selectorLabels" . | nindent 8 }}
       {{- with .Values.commonLabels }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -39,7 +39,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
+      serviceAccountName: {{ include "dhis2-helm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- with .Values.nodeSelector }}
@@ -59,7 +59,7 @@ spec:
           image: busybox
           command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
           volumeMounts:
-            - name: {{ include "dhis2-core-helm.fullname" . }}
+            - name: {{ include "dhis2-helm.fullname" . }}
               mountPath: /dhis-home
       containers:
         - name: {{ .Chart.Name }}
@@ -74,6 +74,12 @@ spec:
               value: "-Dlog4j2.configurationFile={{ .Values.dhis2Home }}/log4j2.xml {{ .Values.javaOpts }}"
             - name: DHIS2_HOME
               value: {{ .Values.dhis2Home }}
+          envFrom: |-
+            {{- range .Values.configMaps }}
+            - configMapRef:
+              name: {{- .name -}}
+              optional: false
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080
@@ -94,7 +100,7 @@ spec:
               path: {{ .Values.readinessProbe.path }}
               port: http
           volumeMounts:
-            - name: {{ include "dhis2-core-helm.fullname" . }}
+            - name: {{ include "dhis2-helm.fullname" . }}
               mountPath: {{ .Values.dhis2Home }}
               readOnly: false
             - name: dhis-conf
@@ -109,39 +115,48 @@ spec:
             - name: server-xml
               mountPath: /usr/local/tomcat/conf/server.xml
               subPath: server.xml
+            - name: context-xml
+              mountPath: /usr/local/tomcat/conf/context.xml
+              subPath: context.xml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: dhis-conf
           configMap:
-            name: {{ include "dhis2-core-helm.fullname" . }}
+            name: {{ include "dhis2-helm.fullname" . }}
             items:
               - key: dhis.conf
                 path: dhis.conf
         - name: google-auth-json
           configMap:
-            name: {{ include "dhis2-core-helm.fullname" . }}
+            name: {{ include "dhis2-helm.fullname" . }}
             items:
               - key: dhis-google-auth.json
                 path: dhis-google-auth.json
         - name: server-xml
           configMap:
-            name: {{ include "dhis2-core-helm.fullname" . }}
+            name: {{ include "dhis2-helm.fullname" . }}
             items:
               - key: server.xml
                 path: server.xml
         - name: log4j2-xml
           configMap:
-            name: {{ include "dhis2-core-helm.fullname" . }}
+            name: {{ include "dhis2-helm.fullname" . }}
             items:
               - key: log4j2.xml
                 path: log4j2.xml
+        - name: context-xml
+          configMap:
+            name: {{ include "dhis2-helm.fullname" . }}
+            items:
+              - key: context.xml
+                path: context.xml
   {{- if .Values.storage.persisted }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ include "dhis2-core-helm.fullname" . }}
+        name: {{ include "dhis2-helm.fullname" . }}
         labels:
-          {{- include "dhis2-core-helm.labels" . | nindent 10 }}
+          {{- include "dhis2-helm.labels" . | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce

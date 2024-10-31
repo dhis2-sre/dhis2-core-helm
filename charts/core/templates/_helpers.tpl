@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "dhis2-core-helm.name" -}}
+{{- define "dhis2-helm.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "dhis2-core-helm.fullname" -}}
+{{- define "dhis2-helm.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "dhis2-core-helm.chart" -}}
+{{- define "dhis2-helm.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "dhis2-core-helm.labels" -}}
-helm.sh/chart: {{ include "dhis2-core-helm.chart" . }}
-{{ include "dhis2-core-helm.selectorLabels" . }}
+{{- define "dhis2-helm.labels" -}}
+helm.sh/chart: {{ include "dhis2-helm.chart" . }}
+{{ include "dhis2-helm.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -48,17 +48,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "dhis2-core-helm.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "dhis2-core-helm.name" . }}
+{{- define "dhis2-helm.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "dhis2-helm.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dhis2-core-helm.serviceAccountName" -}}
+{{- define "dhis2-helm.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "dhis2-core-helm.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "dhis2-helm.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

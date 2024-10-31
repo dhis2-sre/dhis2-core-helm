@@ -21,7 +21,6 @@
 .idea/
 *.tmproj
 .vscode/
-*.tgz
 *.tgz.prov
 .env
 .env.example

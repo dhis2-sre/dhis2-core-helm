@@ -4,4 +4,4 @@ on: pull_request
 
 jobs:
   dependabot:
-    uses: dhis2-sre/gha-workflows/.github/workflows/dependabot.yaml@v0.8.0
+    uses: bombeke/gha-workflows/.github/workflows/dependabot.yaml@v0.8.0

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dhis2-core-helm.fullname" . }}
+  name: {{ include "dhis2-helm.fullname" . }}
   labels:
-    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
+    {{- include "dhis2-helm.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "dhis2-core-helm.selectorLabels" . | nindent 4 }}
+    {{- include "dhis2-helm.selectorLabels" . | nindent 4 }}

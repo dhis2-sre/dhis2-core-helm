@@ -1,16 +1,18 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "dhis2-core-helm.fullname" . }}
+  name: {{ include "dhis2-helm.fullname" . }}
   labels:
-    {{- include "dhis2-core-helm.labels" . | nindent 4 }}
-data:
+    {{- include "dhis2-helm.labels" . | nindent 4 }}
+data: 
   dhis.conf: |
     {{- .Values.dhisConfig | nindent 4 }}
   log4j2.xml: |
     {{- .Files.Get .Values.log4j2 | nindent 4 }}
   server.xml: |
     {{- .Files.Get .Values.serverXml | nindent 4 }}
+  context.xml: |
+    {{- .Files.Get .Values.contextXml | nindent 4 }}
   dhis-google-auth.json: |
     {
       "type": "service_account",
@@ -24,3 +26,15 @@ data:
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dhis2-demo%40dhis2-gis.iam.gserviceaccount.com"
     }
+
+{{- range .Values.configMaps }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name | lower }}
+data:
+  {{- range $key, $val := .data }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+---
+{{- end }}
