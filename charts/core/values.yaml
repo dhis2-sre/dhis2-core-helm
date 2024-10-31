@@ -139,7 +139,7 @@ redis:
     enabled: false
 
 postgresql:
-  enabled: false
+  enabled: true
   auth:
     database: dhis2
     password: dhis2
