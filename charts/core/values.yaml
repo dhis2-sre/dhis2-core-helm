@@ -22,10 +22,10 @@ dhisConfig: |
   connection.username = dhis
   connection.password = dhis
   # Server base URL
-  server.base.url = https://{{ .Release.Name | lower }}.{{ .Release.Namespace | lower }}.svc.cluster.local/
+  server.base.url = https://dhis2.default.svc.cluster.local/
 
 configMaps:
-  - name: dhisConfigEnv
+  - name: dhisconfigenv
     data:
       DHIS2_JVM_HEAP: 4G
       DHIS2_MONITORING_API: 'off'
@@ -101,7 +101,7 @@ service:
 
 ingress:
   enabled: true
-  hostname: "{{ .Release.Name | lower }}.{{ .Release.Namespace | lower }}.svc.cluster.local"
+  hostname: "dhis2.default.svc.cluster.local"
   path: /
   # certIssuer: letsencrypt-staging | letsencrypt-prod
   annotations: {}
