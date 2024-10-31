@@ -86,14 +86,14 @@ podLabels: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-#securityContext:
-#   capabilities:
-#     drop:
-#     - ALL
-#   readOnlyRootFilesystem: false # To be changed once dhis2-core and Tomcat are configured to log to stdout without needing write access.
-#   runAsNonRoot: true
-#   runAsUser: 65534
-#   runAsGroup: 65534
+securityContext:
+   #capabilities:
+    # drop:
+    # - ALL
+   readOnlyRootFilesystem: false # To be changed once dhis2-core and Tomcat are configured to log to stdout without needing write access.
+   #runAsNonRoot: true
+   runAsUser: 0
+   runAsGroup: 65534
 
 service:
   type: ClusterIP
