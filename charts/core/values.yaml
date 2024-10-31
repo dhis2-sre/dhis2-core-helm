@@ -18,7 +18,7 @@ googleAuth:
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect
   connection.driver_class = org.postgresql.Driver
-  connection.url = jdbc:postgresql://dhis2app-postgresql-0.default.svc.cluster.local:5432/dhis2}
+  connection.url = jdbc:postgresql://dhis2app-postgresql-0:5432/dhis2
   connection.username = dhis2
   connection.password = dhis2
   connection.schema = update
