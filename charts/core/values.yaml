@@ -18,11 +18,268 @@ googleAuth:
 dhisConfig: |
   connection.dialect = org.hibernate.dialect.PostgreSQLDialect
   connection.driver_class = org.postgresql.Driver
-  connection.url = jdbc:postgresql://postgresql/dhis2
-  connection.username = dhis
-  connection.password = dhis
-  # Server base URL
-  server.base.url = https://dhis2.default.svc.cluster.local/
+  connection.url = jdbc:postgresql://dhis2app-postgresql-0.default.svc.cluster.local:5432/dhis2}
+  connection.username = dhis2
+  connection.password = dhis2
+  connection.schema = update
+
+  system.base_url = http://localhost:8080
+
+  metadata.audit.log = on
+  metadata.audit.persist = on 
+  audit.database = off
+  audit.logger = off
+
+  #amqp.mode =${DHIS2_MQ_MODE}
+  #amqp.host =${DHIS2_MQ_HOST}
+  #amqp.port =${DHIS2_MQ_PORT}
+  #amqp.exchange =${DHIS2_MQ_EXCHANGE}
+  #amqp.username =${DHIS2_MQ_USER}
+  #amqp.password =${DHIS2_MQ_PASS}
+  #leader.time.to.live.minutes=${DHIS2_REDIS_TTL}
+  audit.metadata = "DISABLED"
+  audit.tracker = "DISABLED"
+  audit.aggregate = "DISABLED"
+  redis.enabled = false
+  #redis.host =${DHIS2_REDIS_USER}
+  #redis.port =${DHIS2_REDIS_PORT}
+  #redis.password =${DHIS2_REDIS_PASS}
+
+  # PAT enable
+  enable.api_token.authentication = on
+  # ----------------------------------------------------------------------
+  # Monitoring [Optional]
+  # ----------------------------------------------------------------------
+
+  # DHIS2 API monitoring
+  monitoring.api.enabled = off
+
+  # JVM monitoring
+  monitoring.jvm.enabled = off
+
+  # Database connection pool monitoring
+  monitoring.dbpool.enabled = off
+
+  # Hibernate monitoring, do not use in production
+  monitoring.hibernate.enabled = off
+
+  # Uptime monitoring
+  monitoring.uptime.enabled = off
+
+  # CPU monitoring
+  monitoring.cpu.enabled = off
+
+  # ----------------------------------------------------------------------
+  # Analytics [Optional]
+  # ----------------------------------------------------------------------
+
+  # Analytics server-side cache expiration in seconds
+  analytics.cache.expiration = 3600
+
+  # ----------------------------------------------------------------------
+  # System telemetry [Optional]
+  # ----------------------------------------------------------------------
+
+  # System monitoring URL
+  system.monitoring.url = "http://localhost"
+
+  # System monitoring username
+  system.monitoring.username = user
+
+  # System monitoring password (sensitive)
+  system.monitoring.password = pass
+
+  # Session timeout in seconds, default is 3600
+  system.session.timeout = 3600
+
+  # SQL view protected tables, can be 'on', 'off'
+  system.sql_view_table_protection = on
+
+  # SQL view write enabled, can be 'on', 'off'
+  system.sql_view_write_enabled = off
+
+  # Disable server-side program rule execution, can be 'on', 'off'
+  system.program_rule.server_execution = on
+
+  # Max size of connection pool (default: 40)
+  connection.pool.max_size = 40
+
+  # ----------------------------------------------------------------------
+  # Database connection pool [Optional]
+  # ----------------------------------------------------------------------
+
+  # Minimum number of Connections a pool will maintain at any given time (default: 5).
+  connection.pool.min_size = 5
+
+  # Number of connections a pool will try to acquire upon startup. Should be between minPoolSize and maxPoolSize.
+  connection.pool.initial_size = 5
+
+  # Determines how many connections at a time will try to acquire when the pool is exhausted.
+  connection.pool.acquire_incr = 5
+
+  # Seconds a Connection can remain pooled but unused before being discarded. Zero means idle connections never expire. (default: 7200)
+  connection.pool.max_idle_time = 7200
+
+  # Number of seconds that connections in excess of minPoolSize is permitted to remain idle in the pool before being culled (default: 0)
+  connection.pool.max_idle_time_excess_con = 0
+
+  # If greater than 0, dhis2 will test all idle, pooled but unchecked-out connections, every this number of seconds. (default: 0)
+  connection.pool.idle.con.test.period = 0
+
+  # If on, an operation will be performed at every connection checkout to verify that the connection is valid. (default: false)
+  connection.pool.test.on.checkout = false
+
+  # If on, an operation will be performed asynchronously at every connection checkin to verify that the connection is valid. (default: on)
+  connection.pool.test.on.checkin = on
+
+  # Determines the query that will be executed for all connection tests
+  connection.pool.preferred.test.query = select 1
+
+  # Determines the number of helper threads used by dhis2 for jdbc operations. (default: 3)
+  connection.pool.num.helper.threads = 3
+
+  # Database connection pool type, supported types are 'c3p0' (default), 'hikari', 'unpooled'
+  #db.pool.type =${DHIS2_DB_POOL_TYPE}
+  #db.pool.type ='hikari'
+
+  # System identifier
+  #system.id = hmis1.country.org
+
+  # System mode for database read operations only, can be 'off', 'on'
+  #system.read_only_mode = off
+
+  # Encryption password (sensitive)
+  #encryption.password = xxxx
+
+  # ----------------------------------------------------------------------
+  # File store [Optional]
+  # ----------------------------------------------------------------------
+
+  # File store provider. Currently 'filesystem' (default), 'aws-s3' and 's3' are supported.
+  filestore.provider = filesystem
+
+  # Directory / bucket name, folder below DHIS2_HOME on file system, 'bucket' in AWS S3
+  filestore.container = files
+
+  # URL where the S3 compatible API can be accessed (only for provider 's3')
+  #filestore.endpoint = http://minio:9000 
+
+  # Datacenter location (not required)
+  #filestore.location = eu-west-1
+
+  # Public identity / username
+  #filestore.identity = dhis2-id
+
+  # Secret key / password (sensitive)
+  #filestore.secret = xxxx
+
+
+  # ----------------------------------------------------------------------
+  # LDAP [Optional]
+  # ----------------------------------------------------------------------
+
+  # LDAP server URL
+  #ldap.url = ldaps://300.20.300.20:636
+
+  # LDAP manager user distinguished name
+  #ldap.manager.dn = cn=JohnDoe,ou=Country,ou=Admin,dc=hisp,dc=org
+
+  # LDAP manager user password (sensitive)
+  #ldap.manager.password = xxxx
+
+  # LDAP entry distinguished name search base
+  #ldap.search.base = dc=hisp,dc=org
+
+  # LDAP entry distinguished name filter
+  #ldap.search.filter = (cn={0})
+
+  # ----------------------------------------------------------------------
+  # Node [Optional]
+  # ----------------------------------------------------------------------
+
+  # Node identifier, optional, useful in clusters
+  #node.id = 'node-1'
+
+  # Enables OIDC login
+  #oidc.oauth2.login.enabled = on
+
+  # Google Authentication
+  # Client id, given to you in the Google developer console
+  #oidc.provider.google.client_id = my client id
+
+  # Client secret, given to you in the Google developer console
+  #oidc.provider.google.client_secret = my client secret
+
+  # [Optional] Authorized redirect URI, the same as set in the Google developer console 
+  # If your public hostname is different from what the server sees internally, 
+  # you need to provide your full public url, like the example below.
+  #oidc.provider.google.redirect_url = https://mydhis2-server.org/oauth2/code/google
+
+
+  # [Optional] Where to redirect after logging out.
+  # If your public hostname is different from what the server sees internally, 
+  # you need to provide your full public url, like the example below. 
+  #oidc.logout.redirect_url = https://mydhis2-server.org
+
+  # Required variables:
+  #oidc.provider.helseid.client_id = CLIENT_ID
+  #oidc.provider.helseid.client_secret = CLIENT_SECRET
+  #oidc.provider.helseid.mapping_claim = helseid://claims/identity/email
+  #oidc.provider.helseid.authorization_uri = https://helseid.no/connect/authorize
+  #oidc.provider.helseid.token_uri = https://helseid.no/connect/token
+  #oidc.provider.helseid.user_info_uri = https://helseid.no/connect/userinfo
+  #oidc.provider.helseid.jwk_uri = https://helseid.no/.well-known/openid-configuration/jwks
+  #oidc.provider.helseid.end_session_endpoint = https://helseid.no/connect/endsession
+  #oidc.provider.helseid.scopes = helseid://scopes/identity/email
+
+  # [Optional] Authorized redirect URI, the as set in Azure portal 
+  # If your public hostname is different from what the server sees internally, 
+  # you need to provide your full public url, like the example below.
+  #oidc.provider.helseid.redirect_url = https://mydhis2-server.org/oauth2/code/helseid
+
+  # [Optional], defaults to 'on'
+  #oidc.provider.helseid.enable_logout = on
+
+  # [Optional] Where to redirect after logging out.
+  # If your public hostname is different from what the server sees internally, 
+  # you need to provide your full public URL, like the example below.
+  #oidc.logout.redirect_url = https://mydhis2-server.org
+
+  # [Optional] PKCE support, see: https://oauth.net/2/pkce/), default is 'false'
+  #oidc.provider.helseid.enable_pkce = on
+
+  # [Optional] Extra variables appended to the request. 
+  # Must be key/value pairs like: "KEY1 VALUE1,KEY2 VALUE2,..."
+  #oidc.provider.helseid.extra_request_parameters = acr_values lvl4,other_key value2
+
+  # [Optional] This is the alias/name displayed on the login button in the DHIS2 login page
+  #oidc.provider.helseid.display_alias = HelseID
+
+  # [Optional] Link to an url for a logo. (Can use absolute or relative URLs)
+  #oidc.provider.helseid.logo_image = ../security/btn_helseid.svg
+  # [Optional] CSS padding for the logo image
+  #oidc.provider.helseid.logo_image_padding = 0px 1px
+
+  # Enable JWT support
+  #oauth2.authorization.server.enabled = off
+  #oidc.jwt.token.authentication.enabled = on
+
+  # Define client 1 using JWT tokens
+  #oidc.provider.google.ext_client.0.client_id = JWT_CLIENT_ID
+
+  # Okta OIDC settings
+  #oidc.provider.okta.client_id = {client_id}
+  #oidc.provider.okta.client_secret = {client_secret}
+  #oidc.provider.okta.mapping_claim = email
+  #oidc.provider.okta.display_alias = Sign in with Okta
+  #oidc.provider.okta.enable_logout = on
+  #oidc.provider.okta.scopes = email
+  #oidc.provider.okta.authorization_uri = https://{client_domain}/oauth2/v1/authorize
+  #oidc.provider.okta.token_uri = https://{client_domain}/oauth2/v1/token
+  #oidc.provider.okta.user_info_uri = https://{client_domain}/oauth2/v1/userinfo
+  #oidc.provider.okta.jwk_uri = https://{client_domain}/oauth2/v1/keys
+  #oidc.provider.okta.end_session_endpoint = https://{client_domain}/oauth2/v1/logout
+  #server.base.url = https://dhis2.default.svc.cluster.local/
 
 configMaps:
   - name: dhisconfigenv
