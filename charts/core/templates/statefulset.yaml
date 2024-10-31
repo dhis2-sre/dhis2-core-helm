@@ -57,10 +57,10 @@ spec:
       initContainers:
         - name: dhis2-home-permissions
           image: busybox
-          command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
+          command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.dhis2Home }} && chmod u+rw,go-rwx {{ .Values.dhis2Home }}' ]
           volumeMounts:
             - name: {{ include "dhis2-helm.fullname" . }}
-              mountPath: /dhis-home
+              mountPath: {{ .Values.dhis2Home }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
