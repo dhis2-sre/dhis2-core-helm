@@ -412,6 +412,7 @@ postgresql:
   backup:
     enabled: true
   primary:
+    debug: true
     initdb:
       scripts:
           00_init_extensions.sql: |
@@ -429,4 +430,6 @@ postgresql:
             alter system set track_activity_query_size = 8192;
             alter system set jit = 'off';
             \c template1
+            CREATE EXTENSION IF NOT EXISTS postgis;
+            \c dhis2
             CREATE EXTENSION IF NOT EXISTS postgis;
