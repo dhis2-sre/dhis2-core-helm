@@ -11,6 +11,14 @@ dependencies:
     version: "~16"
     repository: "https://charts.bitnami.com/bitnami"
     condition: postgresql.enabled
+  - name: mariadb
+    version: "~19"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: mariadb.enabled
+  - name: casdoor
+    version: "~v1"
+    repository: "oci://registry-1.docker.io/casbin/casdoor-helm-charts"
+    condition: casdoor.enabled
   
 # A chart can be either an 'application' or a 'library' chart.
 #
