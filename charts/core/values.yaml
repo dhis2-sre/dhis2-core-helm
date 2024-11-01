@@ -478,11 +478,11 @@ mariadb:
         echo "Creating authentication database on primary node failed"
       fi
 
-casdoor:
+casdoor-helm-charts:
   enabled: true
   database:
     driver: mysql
-    user: root
+    user: casdoor
     password: password
     host: dhis2app-mariadb.default.svc.cluster.local
     port: 3306
