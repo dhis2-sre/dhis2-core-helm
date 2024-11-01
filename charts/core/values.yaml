@@ -423,7 +423,7 @@ postgresql:
             export PGPASSWORD=$POSTGRES_POSTGRES_PASSWORD
             export POSTGRES_DB=$POSTGRES_DATABASE
             echo "Executing settings on $POSTGRES_DB"
-            
+
             psql -v ON_ERROR_STOP=1 -U postgres --dbname "$POSTGRES_DB" <<-EOSQL
                 alter system set max_connections = 200;
                 alter system set shared_buffers = '3GB';
@@ -457,3 +457,33 @@ postgresql:
             alter system set max_locks_per_transaction = 96;
             alter system set track_activity_query_size = 8192;
             alter system set jit = 'off';
+mariadb:
+  enabled: true
+  debug: true
+  auth:
+    database: casdoor
+    password: password
+    username: casdoor
+    rootPassword: password
+  initdbScripts:
+    01_init_script.sh: |
+      #!/bin/sh
+      export ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+      export ROOT_USER=$MARIADB_ROOT_USER
+
+      if [[ $(hostname) == *primary* ]]; then
+        echo "Creating authentication database on primary node"
+        mysql -P 3306 -u$ROOT_USER -p$ROOT_PASSWORD -e "create database backup_casdoor";
+      else
+        echo "Creating authentication database on primary node failed"
+      fi
+
+casdoor:
+  enabled: true
+  database:
+    driver: mysql
+    user: root
+    password: password
+    host: dhis2app-mariadb.default.svc.cluster.local
+    port: 3306
+    databaseName: casdoor
