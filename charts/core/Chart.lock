@@ -5,5 +5,11 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 16.1.0
-digest: sha256:6b4df686b79afa159627ed203c42f96ed43f4078fa1722a0209924d519a98b86
-generated: "2024-10-31T12:12:13.665209214+03:00"
+- name: mariadb
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.1.0
+- name: casdoor-helm-charts
+  repository: oci://registry-1.docker.io/casbin
+  version: v1.739.0
+digest: sha256:2aadc46246e1396fde30f49b1c2e7b43278bf703996d0d760c2d90586a646f51
+generated: "2024-11-02T00:02:59.509228197+03:00"
