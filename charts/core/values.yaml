@@ -415,7 +415,12 @@ postgresql:
     debug: true
     initdb:
       scripts:
-          00_init_extensions.sql: |
+          create_extension.sh: |
+            #!/bin/sh
+            echo "Customizing Scripts for deployment"
+            ls -l /docker-entrypoint-initdb.d
+            cat /opt/bitnami/postgresql/conf/postgresql.conf | grep shared_preload_libraries
+          999_init_extensions.sql: |
             alter system set max_connections = 200;
             alter system set shared_buffers = '3GB';
             alter system set work_mem = '24MB';
