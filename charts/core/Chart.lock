@@ -11,5 +11,11 @@ dependencies:
 - name: casdoor-helm-charts
   repository: oci://registry-1.docker.io/casbin
   version: v1.739.0
-digest: sha256:b580667db26012f600f969accb5a1da416873241443982023a572136c4578fca
-generated: "2024-11-02T00:39:31.274063413+03:00"
+- name: superset
+  repository: https://apache.github.io/superset
+  version: 0.12.11
+- name: trino
+  repository: https://trinodb.github.io/charts
+  version: 0.33.0
+digest: sha256:c02e4e16e568b26b12c33673b30a94fa2b42b6e73a0082ff4897c417391dfb02
+generated: "2024-11-02T11:36:00.00170493+03:00"
