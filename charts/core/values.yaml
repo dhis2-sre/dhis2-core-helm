@@ -491,7 +491,38 @@ casdoor-helm-charts:
 superset:
   enabled: true
   postgresql:
+    enabled: true
+    fullnameOverride: "superset-postgresql"
+      debug: false
+    auth:
+      database: superset
+      password: superset
+      username: superset
     postgresqlPassword: superset
+
+    primary:
+      fullnameOverride: "superset-primary-postgresql"
+    
+    configOverrides:
+      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.superset.postgresql.auth.username }}:{{ .Values.superset.postgresql.auth.password }}@{{ .Values.superset.postgresql.fullnameOverride }}:5432/{{ .Values.superset.postgresql.auth.database }}"
+  #supersetNode:
+  #  connections:
+  #    db_host: '{{ .Release.Name }}-postgresql'
+  #    db_port: "5432"
+  #    db_user: superset
+  #    db_pass: superset
+  #    db_name: superset
+  #configOverrides:
+  #  DATABASE_DIALECT: "postgresql"
+  #  DATABASE_USER: "<existing-db-username>"
+  #  DATABASE_PASSWORD: "<existing-db-password>"
+  #  DATABASE_HOST: "<existing-db-host>"
+  #  DATABASE_PORT: "<existing-db-port>"
+  #  DATABASE_DB: "<existing-db-name>"
+
+  #extraEnv:
+  #  - name: SUPERSET_DATABASE_URI
+  #    value: "postgresql+psycopg2://<existing-db-username>:<existing-db-password>@<existing-db-host>:<existing-db-port>/<existing-db-name>"
   bootstrapScript: |
     #!/bin/bash
     pip install psycopg2 \
