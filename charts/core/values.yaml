@@ -493,7 +493,7 @@ superset:
   postgresql:
     enabled: true
     fullnameOverride: "superset-postgresql"
-      debug: false
+    debug: true
     auth:
       database: superset
       password: superset
