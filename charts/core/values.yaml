@@ -526,9 +526,9 @@ superset:
             SECRET_KEY=$(openssl rand -base64 42)
             kubectl create secret generic superset-secret --from-literal=secret-key=$SECRET_KEY --dry-run=client -o yaml | kubectl apply -f -
           fi
-      env:
+      env: |
         - name: SUPERSET_SECRET
-            value: "{{ .Values.superset.existingSecretKey | default "thisISaSECRET_1234" }}"
+          value: "{{ tpl "{{ .Values.superset.existingSecretKey | default \"thisISaSECRET_1234\" }}" . }}"
 
   #supersetNode:
   #  connections:
