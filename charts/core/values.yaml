@@ -528,7 +528,7 @@ superset:
           fi
       env:
         - name: SUPERSET_SECRET
-          value: "{{ .Values.superset.existingSecretKey | default "thisISaSECRET_1234" }}"
+            value: "{{ .Values.superset.existingSecretKey | default "thisISaSECRET_1234" }}"
 
   #supersetNode:
   #  connections:
