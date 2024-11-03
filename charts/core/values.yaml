@@ -503,8 +503,17 @@ superset:
     primary:
       fullnameOverride: "superset-primary-postgresql"
     
-    configOverrides:
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.superset.postgresql.auth.username }}:{{ .Values.superset.postgresql.auth.password }}@{{ .Values.superset.postgresql.fullnameOverride }}:5432/{{ .Values.superset.postgresql.auth.database }}"
+  configOverrides:
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.superset.postgresql.auth.username }}:{{ .Values.superset.postgresql.auth.password }}@{{ .Values.superset.postgresql.fullnameOverride }}:5432/{{ .Values.superset.postgresql.auth.database }}"
+    secret: |
+      #!/bin/bash
+      export SUPERSET_SECRET=$SECRET_KEY
+
+      if [ $SUPERSET_SECRET =="thisISaSECRET_1234" ]
+      then
+        SECRET_KEY = $(openssl rand -base64 42)
+      else:
+        SECRET_KEY = $SUPERSET_SECRET
   #supersetNode:
   #  connections:
   #    db_host: '{{ .Release.Name }}-postgresql'
