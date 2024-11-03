@@ -7,7 +7,7 @@ dependencies:
   version: 16.1.0
 - name: mariadb
   repository: https://charts.bitnami.com/bitnami
-  version: 19.1.0
+  version: 19.1.1
 - name: casdoor-helm-charts
   repository: oci://registry-1.docker.io/casbin
   version: v1.739.0
@@ -17,5 +17,5 @@ dependencies:
 - name: trino
   repository: https://trinodb.github.io/charts
   version: 0.33.0
-digest: sha256:c02e4e16e568b26b12c33673b30a94fa2b42b6e73a0082ff4897c417391dfb02
-generated: "2024-11-02T11:36:00.00170493+03:00"
+digest: sha256:dbd4d21e92e447afc92cd1c72a87e2768916f453a1307d56d2fc0cf60814696f
+generated: "2024-11-03T21:21:02.193935395+03:00"

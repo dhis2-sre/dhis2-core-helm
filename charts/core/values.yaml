@@ -493,13 +493,14 @@ superset:
   postgresql:
     enabled: true
     fullnameOverride: "{{ .Release.Name }}-superset-postgresql"
-    debug: true
+    #debug: true
     auth:
       database: superset
       password: superset
       username: superset
       postgresqlPassword: superset
-    
+    image:
+      tag: 17.0.0-debian-12-r9  
   configOverrides:
     sql_connect: |
       SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
