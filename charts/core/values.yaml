@@ -498,7 +498,7 @@ superset:
       database: superset
       password: superset
       username: superset
-    postgresqlPassword: superset
+      postgresqlPassword: superset
     
   configOverrides:
     sql_connect: |
