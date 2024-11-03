@@ -502,16 +502,34 @@ superset:
     
   configOverrides:
     SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
-    secret: |
-      #!/bin/bash
-      echo "{{ .Values.postgresql.auth.username }}"
-      export SUPERSET_SECRET=$SECRET_KEY
+  
+    # Environment configuration to dynamically set the SECRET_KEY
+  extraEnv:
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: superset-secret
+          key: secret-key
 
-      if [ $SUPERSET_SECRET =="thisISaSECRET_1234" ]
-      then
-        SECRET_KEY = $(openssl rand -base64 42)
-      else:
-        SECRET_KEY = $SUPERSET_SECRET
+  # Script to dynamically set the secret key, if not predefined
+  extraInitContainers:
+    - name: set-secret-key
+      image: busybox
+      command:
+        - /bin/sh
+        - -c
+        - |
+          #!/bin/sh
+          echo "Setting up secret key for Superset"
+          
+          if [ -z "$SUPERSET_SECRET" ] || [ "$SUPERSET_SECRET" = "thisISaSECRET_1234" ]; then
+            SECRET_KEY=$(openssl rand -base64 42)
+            kubectl create secret generic superset-secret --from-literal=secret-key=$SECRET_KEY --dry-run=client -o yaml | kubectl apply -f -
+          fi
+      env:
+        - name: SUPERSET_SECRET
+          value: "{{ .Values.superset.existingSecretKey | default "thisISaSECRET_1234" }}"
+
   #supersetNode:
   #  connections:
   #    db_host: '{{ .Release.Name }}-postgresql'
