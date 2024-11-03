@@ -492,7 +492,7 @@ superset:
   enabled: true
   postgresql:
     enabled: true
-    fullnameOverride: "superset-postgresql"
+    fullnameOverride: "{{ .Release.Name }}-superset-postgresql"
     debug: true
     auth:
       database: superset
@@ -501,12 +501,13 @@ superset:
     postgresqlPassword: superset
 
     primary:
-      fullnameOverride: "superset-primary-postgresql"
+      fullnameOverride: "{{ .Release.Name }}-superset-primary-postgresql"
     
   configOverrides:
-    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.superset.postgresql.auth.username }}:{{ .Values.superset.postgresql.auth.password }}@{{ .Values.superset.postgresql.fullnameOverride }}:5432/{{ .Values.superset.postgresql.auth.database }}"
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
     secret: |
       #!/bin/bash
+      echo "{{ .Values.postgresql.auth.username }}"
       export SUPERSET_SECRET=$SECRET_KEY
 
       if [ $SUPERSET_SECRET =="thisISaSECRET_1234" ]
