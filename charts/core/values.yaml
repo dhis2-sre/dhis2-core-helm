@@ -290,7 +290,7 @@ configMaps:
       DHIS2_DB_NAME: dhis2
       DHIS2_DB_USER: dhis2
       DHIS2_DB_PASS: dhis2
-      DHIS2_DB_HOST: "dhis2app-postgresql-dhis2.default.svc.cluster.local"
+      DHIS2_DB_HOST: "dhis2app-postgresql-dhis2"
       DHIS2_MONITORING_URL: "http://localhost"
 
 
@@ -487,6 +487,13 @@ casdoor-helm-charts:
     host: dhis2app-mariadb.default.svc.cluster.local
     port: 3306
     databaseName: casdoor
+  ingress:
+    enabled: true
+    hosts: 
+      - host: casdoor.default.svc.cluster.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
 
 superset:
   enabled: true
