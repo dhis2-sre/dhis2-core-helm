@@ -290,7 +290,7 @@ configMaps:
       DHIS2_DB_NAME: dhis2
       DHIS2_DB_USER: dhis2
       DHIS2_DB_PASS: dhis2
-      DHIS2_DB_HOST: "dhis2app-postgresql.default.svc.cluster.local"
+      DHIS2_DB_HOST: "dhis2app-postgresql-dhis2.default.svc.cluster.local"
       DHIS2_MONITORING_URL: "http://localhost"
 
 
@@ -402,7 +402,7 @@ redis:
   auth:
     enabled: false
 
-postgresql:
+postgresql-dhis2:
   enabled: true
   debug: false
   auth:
@@ -491,27 +491,33 @@ casdoor-helm-charts:
 superset:
   enabled: true
   postgresql:
-    enabled: false
-    #fullnameOverride: "{{ .Release.Name }}-superset-postgresql"
+    enabled: true
     #debug: true
     auth:
       database: superset
       password: superset
       username: superset
-      #postgresqlPassword: superset
+      postgresqlPassword: superset
     image:
-      tag: 17.0.0-debian-12-r9  
+      tag: 17.0.0-debian-12-r9
+
+    primary:
+      fullname: "{{ .Release.Name }}-superset-primary"
+
   configOverrides:
     sql_connect: |
       SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
     secret: |
-      #!/bin/sh
-      echo "Setting up secret key for Superset for {{ .Values.postgresql.auth.username }}"
-      export SUPERSET_SECRET=$SECRET_KEY
+      print(f"Setting up secret key for Superset for {{ .Values.postgresql.auth.username }}")
+      SUPERSET_SECRET= os.getenv("SECRET_KEY","thisISaSECRET_1234")
 
-      if [ -z "$SUPERSET_SECRET" ] || [ "$SUPERSET_SECRET" = "thisISaSECRET_1234" ]; then
-        SECRET_KEY=$(openssl rand -base64 42)
-      fi
+      if SUPERSET_SECRET == "thisISaSECRET_1234":
+        import secrets
+        import base64
+        random_bytes = secrets.token_bytes(42)
+        SECRET_KEY = base64.b64encode(random_bytes).decode('utf-8')
+      else:
+        pass
 
   #supersetNode:
   #  connections:
@@ -540,7 +546,7 @@ superset:
     if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
 
 trino:
-  enabled: true
+  enabled: false
   server:
     workers: 1
   catalogs:
