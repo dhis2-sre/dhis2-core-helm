@@ -4,7 +4,7 @@ dependencies:
   version: 20.2.1
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 16.1.0
+  version: 16.1.1
 - name: mariadb
   repository: https://charts.bitnami.com/bitnami
   version: 19.1.1
@@ -17,5 +17,5 @@ dependencies:
 - name: trino
   repository: https://trinodb.github.io/charts
   version: 0.33.0
-digest: sha256:dbd4d21e92e447afc92cd1c72a87e2768916f453a1307d56d2fc0cf60814696f
-generated: "2024-11-03T21:21:02.193935395+03:00"
+digest: sha256:83fb0db9d7b4cc01ffddfbe04333f7787f462118e0a8016923ddb708b36d0522
+generated: "2024-11-04T15:33:07.290721393+03:00"
