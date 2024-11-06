@@ -368,9 +368,10 @@ ingress:
   hostname: "dhis2.default.svc.cluster.local"
   path: /
   # certIssuer: letsencrypt-staging | letsencrypt-prod
-  annotations: {}
+  annotations:
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -495,68 +496,3 @@ casdoor-helm-charts:
           - path: /
             pathType: ImplementationSpecific
 
-superset:
-  enabled: true
-  postgresql:
-    enabled: true
-    #debug: true
-    auth:
-      database: superset
-      password: superset
-      username: superset
-      postgresqlPassword: superset
-    image:
-      tag: 17.0.0-debian-12-r9
-
-    primary:
-      fullname: "{{ .Release.Name }}-superset-primary"
-
-  configOverrides:
-    sql_connect: |
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
-    secret: |
-      print(f"Setting up secret key for Superset for {{ .Values.postgresql.auth.username }}")
-      SUPERSET_SECRET= os.getenv("SECRET_KEY","thisISaSECRET_1234")
-
-      if SUPERSET_SECRET == "thisISaSECRET_1234":
-        import secrets
-        import base64
-        random_bytes = secrets.token_bytes(42)
-        SECRET_KEY = base64.b64encode(random_bytes).decode('utf-8')
-      else:
-        pass
-
-  #supersetNode:
-  #  connections:
-  #    db_host: '{{ .Release.Name }}-postgresql'
-  #    db_port: "5432"
-  #    db_user: superset
-  #    db_pass: superset
-  #    db_name: superset
-  #configOverrides:
-  #  DATABASE_DIALECT: "postgresql"
-  #  DATABASE_USER: "<existing-db-username>"
-  #  DATABASE_PASSWORD: "<existing-db-password>"
-  #  DATABASE_HOST: "<existing-db-host>"
-  #  DATABASE_PORT: "<existing-db-port>"
-  #  DATABASE_DB: "<existing-db-name>"
-
-  #extraEnv:
-  #  - name: SUPERSET_DATABASE_URI
-  #    value: "postgresql+psycopg2://<existing-db-username>:<existing-db-password>@<existing-db-host>:<existing-db-port>/<existing-db-name>"
-  bootstrapScript: |
-    #!/bin/bash
-    pip install psycopg2 \
-      trino \
-      shillelagh[genericjsonapi] \
-      sqlalchemy-solr &&\
-    if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
-
-trino:
-  enabled: false
-  server:
-    workers: 1
-  catalogs:
-    mongodb: |
-      connector.name=mongodb
-      mongodb.connection-url=mongodb://user:pass@sample.host:27017/
