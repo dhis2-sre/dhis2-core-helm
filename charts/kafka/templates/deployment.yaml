@@ -6,30 +6,33 @@ kind: Deployment
 metadata:
   name: {{ include "common.names.fullname" . }}-connect
   namespace: {{ include "common.names.namespace" . | quote }}
-  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+  labels: 
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
     app.kubernetes.io/component: connector
     app.kubernetes.io/part-of: kafka
   {{- if .Values.commonAnnotations }}
-  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  annotations: 
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
-  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
-    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
+    matchLabels: 
+      {{- include "common.labels.matchLabels" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 6 }}
       app.kubernetes.io/component: connector
       app.kubernetes.io/part-of: kafka
   template:
     metadata:
-      labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 8 }}
+      labels: 
+        {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 8 }}
         app.kubernetes.io/component: connector
         app.kubernetes.io/part-of: kafka
     spec:
       containers:
         - name: connect
-          image: {{ .Values.kafka.image | quote }}
+          image: {{ include "kafka.image" . }}
           imagePullPolicy: {{ .Values.kafka.image.pullPolicy | quote }}
           env:
             - name: BITNAMI_DEBUG
@@ -115,6 +118,25 @@ spec:
             {{- if .Values.kafka.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.kafka.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
+          {{- if or .Values.kafka.broker.extraEnvVarsCM .Values.kafka.extraEnvVarsCM .Values.kafka.broker.extraEnvVarsSecret .Values.kafka.extraEnvVarsSecret }}
+          envFrom:
+            {{- if .Values.kafka.broker.extraEnvVarsCM }}
+            - configMapRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.kafka.broker.extraEnvVarsCM "context" $) }}
+            {{- end }}
+            {{- if .Values.kafka.extraEnvVarsCM }}
+            - configMapRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.kafka.extraEnvVarsCM "context" $) }}
+            {{- end }}
+            {{- if .Values.kafka.broker.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.kafka.broker.extraEnvVarsSecret "context" $) }}
+            {{- end }}
+            {{- if .Values.kafka.extraEnvVarsSecret }}
+            - secretRef:
+                name: {{ include "common.tplvalues.render" (dict "value" .Values.kafka.extraEnvVarsSecret "context" $) }}
+            {{- end }}
+          {{- end }}
           ports:
             - name: connector
               containerPort: 8083
@@ -125,3 +147,4 @@ spec:
         - name: configuration
           configMap:
             name: {{ include "common.names.fullname" . }}-connect
+{{- end }}

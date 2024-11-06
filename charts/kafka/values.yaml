@@ -103,6 +103,14 @@ replicaCount: 1
 autoscaling:
   enabled: false
 
+service:
+  type: ClusterIP
+  port: 8083
+
+ingress:
+  enabled: false
+
 kafka:
   enabled: true
-
+  kraft:
+    enabled: true

@@ -33,7 +33,8 @@ jobs:
           helm repo add trino https://trinodb.github.io/charts
           helm repo update
           helm dependency update charts/core
-
+          helm dependency update charts/dashboard
+          helm dependency update charts/kafka
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         with:

@@ -7,15 +7,9 @@ dependencies:
   version: 16.1.1
 - name: mariadb
   repository: https://charts.bitnami.com/bitnami
-  version: 19.1.1
+  version: 19.1.2
 - name: casdoor-helm-charts
   repository: oci://registry-1.docker.io/casbin
   version: v1.739.0
-- name: superset
-  repository: https://apache.github.io/superset
-  version: 0.12.11
-- name: trino
-  repository: https://trinodb.github.io/charts
-  version: 0.33.0
-digest: sha256:83fb0db9d7b4cc01ffddfbe04333f7787f462118e0a8016923ddb708b36d0522
-generated: "2024-11-04T15:33:07.290721393+03:00"
+digest: sha256:e3005710cad07943a1645dcbb756814742f10dc0b80aef4ad40c65780a1d659d
+generated: "2024-11-06T10:15:19.371462824+03:00"
