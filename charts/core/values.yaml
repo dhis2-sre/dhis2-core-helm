@@ -431,7 +431,8 @@ postgresql:
             echo "Customizing Scripts for deployment"
             # Perform all actions as $POSTGRES_USER
             export PGPASSWORD=$POSTGRES_POSTGRES_PASSWORD
-            export POSTGRES_DB=$POSTGRES_DATABASE
+            # export POSTGRES_DB=$POSTGRES_DATABASE # for Pg15 and above
+            export POSTGRES_DB=$POSTGRES_DB # for Pg15 and above
             echo "Executing settings on $POSTGRES_DB"
 
             psql -v ON_ERROR_STOP=1 -U postgres --dbname "$POSTGRES_DB" <<-EOSQL
