@@ -1,0 +1,9 @@
+dependencies:
+- name: superset
+  repository: https://apache.github.io/superset
+  version: 0.12.11
+- name: trino
+  repository: https://trinodb.github.io/charts
+  version: 0.33.0
+digest: sha256:60862e54b21c6d53ae5b08ee5b765a66df68060398f03ab19fd082ac4e223775
+generated: "2024-11-06T10:16:14.80625607+03:00"

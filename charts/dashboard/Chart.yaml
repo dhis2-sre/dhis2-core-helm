@@ -1,28 +1,16 @@
 apiVersion: v2
-name: core
-description: DHIS 2 Helm Chart
+name: dashboard
+description: A Helm chart for Kubernetes
 
 dependencies:
-  - name: redis
-    version: "~20"
-    repository: "https://charts.bitnami.com/bitnami"
-    condition: redis.enabled
-    
-  - name: postgresql
-    version: "~16"
-    repository: "https://charts.bitnami.com/bitnami"
-    condition: postgresql-dhis2.enabled
-
-  - name: mariadb
-    version: "~19"
-    repository: "https://charts.bitnami.com/bitnami"
-    condition: mariadb.enabled
-  - name: casdoor-helm-charts
-    version: "v1.739.0"
-    repository: "oci://registry-1.docker.io/casbin"
-    condition: casdoor-helm-charts.enabled
-
-  
+  - name: superset
+    version: "~0"
+    repository: "https://apache.github.io/superset"
+    condition: superset.enabled
+  - name: trino
+    version: "~0"
+    repository: "https://trinodb.github.io/charts"
+    condition: trino.enabled
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -36,7 +24,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.31
+version: 0.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
