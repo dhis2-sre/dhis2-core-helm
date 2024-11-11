@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled .Values.enabled -}}
 {{- $fullName := include "dhis2-helm.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- $tls := hasKey .Values.ingress "certIssuer" -}}
@@ -36,3 +36,4 @@ spec:
                 port:
                   number: {{ $svcPort }}
 {{- end }}
+
