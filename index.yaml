@@ -819,4 +819,57 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.0/core-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-04T12:50:58.972256578Z"
+  dashboard:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T13:06:05.170468806Z"
+    dependencies:
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: A Helm chart for Kubernetes
+    digest: 53a14b581bf61c266ff99c2aefeef4decfc4dda71983d1c6a34479e0895ca901
+    name: dashboard
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/dashboard-0.1.0/dashboard-0.1.0.tgz
+    version: 0.1.0
+  kafka:
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: jmx-exporter
+          image: docker.io/bitnami/jmx-exporter:1.0.1-debian-12-r9
+        - name: kafka
+          image: docker.io/bitnami/kafka:3.8.1-debian-12-r0
+        - name: kubectl
+          image: docker.io/bitnami/kubectl:1.31.2-debian-12-r3
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r32
+      licenses: Apache-2.0
+    apiVersion: v2
+    appVersion: 3.8.1
+    created: "2024-11-11T13:06:05.298411335Z"
+    dependencies:
+    - condition: kafka.enabled
+      name: kafka
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~30
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Helm Kafka Streaming Chart
+    digest: 2a9a6805ae4a670b6fe47791468fcbe40c3cfcb6b6ebc496d7e15a34075604b7
+    name: kafka
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.0/kafka-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-11-11T13:06:05.298453844Z"
