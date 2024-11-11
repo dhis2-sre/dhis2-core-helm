@@ -2,10 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 commonLabels: {}
+ 
+# Enable Chart installation
+enabled: false
 
 storage:
   persisted: true
-  volumeSize: 1Gi
+  volumeSize: 2Gi
   className: ~
 
 googleAuth:
@@ -412,8 +415,14 @@ postgresql:
     username: dhis2
     postgresPassword: password
   backup:
-    enabled: true
+    enabled: false
   primary:
+    livenessProbe:
+      enabled: false
+    readinesProbe:
+      enabled: false
+    persistence:
+      size: 20Gi
     initdb:
       scripts:
           01_create_extension.sh: |
@@ -426,38 +435,25 @@ postgresql:
             echo "Executing settings on $POSTGRES_DB"
 
             psql -v ON_ERROR_STOP=1 -U postgres --dbname "$POSTGRES_DB" <<-EOSQL
-                alter system set max_connections = 200;
-                alter system set shared_buffers = '3GB';
-                alter system set work_mem = '24MB';
-                alter system set maintenance_work_mem = '1GB';
-                alter system set temp_buffers = '16MB';
-                alter system set effective_cache_size = '4GB';
+                --alter system set max_connections = 200;
+                --alter system set shared_buffers = '3GB';
+                --alter system set work_mem = '24MB';
+                --alter system set maintenance_work_mem = '1GB';
+                --alter system set temp_buffers = '16MB';
+                --alter system set effective_cache_size = '4GB';
                 alter system set checkpoint_completion_target = 0.8;
                 alter system set synchronous_commit = 'off';
                 alter system set wal_writer_delay = '10s';
                 alter system set random_page_cost = 1.1;
-                alter system set max_locks_per_transaction = 96;
+                alter system set max_locks_per_transaction = 100;
                 alter system set track_activity_query_size = 8192;
                 alter system set jit = 'off';
                 \c template1
                 CREATE EXTENSION IF NOT EXISTS postgis;
                 \c dhis2
                 CREATE EXTENSION IF NOT EXISTS postgis;
+                GRANT INSERT ON TABLE public.spatial_ref_sys TO dhis2;
             EOSQL
-          02_init_extensions.sql: |
-            alter system set max_connections = 200;
-            alter system set shared_buffers = '3GB';
-            alter system set work_mem = '24MB';
-            alter system set maintenance_work_mem = '1GB';
-            alter system set temp_buffers = '16MB';
-            alter system set effective_cache_size = '4GB';
-            alter system set checkpoint_completion_target = 0.8;
-            alter system set synchronous_commit = 'off';
-            alter system set wal_writer_delay = '10s';
-            alter system set random_page_cost = 1.1;
-            alter system set max_locks_per_transaction = 96;
-            alter system set track_activity_query_size = 8192;
-            alter system set jit = 'off';
 mariadb:
   enabled: true
   debug: true
