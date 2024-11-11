@@ -445,9 +445,9 @@ postgresql:
                 alter system set synchronous_commit = 'off';
                 alter system set wal_writer_delay = '10s';
                 alter system set random_page_cost = 1.1;
-                alter system set max_locks_per_transaction = 100;
+                alter system set max_locks_per_transaction = 96;
                 alter system set track_activity_query_size = 8192;
-                alter system set jit = 'off';
+                --alter system set jit = 'off';
                 \c template1
                 CREATE EXTENSION IF NOT EXISTS postgis;
                 \c dhis2
