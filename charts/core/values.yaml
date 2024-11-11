@@ -290,7 +290,7 @@ configMaps:
       DHIS2_DB_NAME: dhis2
       DHIS2_DB_USER: dhis2
       DHIS2_DB_PASS: dhis2
-      DHIS2_DB_HOST: "dhis2app-postgresql-dhis2"
+      DHIS2_DB_HOST: dhis2app-postgresql
       DHIS2_MONITORING_URL: "http://localhost"
 
 
@@ -403,7 +403,7 @@ redis:
   auth:
     enabled: false
 
-postgresql-dhis2:
+postgresql:
   enabled: true
   debug: false
   auth:

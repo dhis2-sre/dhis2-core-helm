@@ -12,7 +12,6 @@ dependencies:
     version: "~16"
     repository: "https://charts.bitnami.com/bitnami"
     condition: postgresql-dhis2.enabled
-    alias: postgresql-dhis2
 
   - name: mariadb
     version: "~19"

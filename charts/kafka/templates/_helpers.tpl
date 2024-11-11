@@ -71,7 +71,7 @@ Kraft section of the server.properties
 {{- $listener := $.Values.listeners.controller }}
 {{- if and $listener.sslClientAuth (regexFind "SSL" (upper $listener.protocol)) }}
 # Kraft Controller listener SSL settings
-listener.name.{{lower $listener.name}}.ssl.client.auth={{ $listener.sslClientAuth }}
+#listener.name.{{lower $listener.name}}.ssl.client.auth={{ $listener.sslClientAuth }}
 {{- end }}
 {{- if regexFind "SASL" (upper $listener.protocol) }}
   {{- $mechanism := $.Values.sasl.controllerMechanism }}
@@ -88,12 +88,15 @@ listener.name.{{lower $listener.name}}.ssl.client.auth={{ $listener.sslClientAut
   {{- $saslJaasConfig = append $saslJaasConfig (printf "user_%s=\"controller-password-placeholder\"" $.Values.sasl.controller.user) }}
   {{- end }}
 # Kraft Controller listener SASL settings
-sasl.mechanism.controller.protocol={{ upper $mechanism }}
-listener.name.{{lower $listener.name}}.sasl.enabled.mechanisms={{ upper $mechanism }}
-listener.name.{{lower $listener.name}}.{{lower $mechanism }}.sasl.jaas.config={{ join " " $saslJaasConfig }};
+# sasl.mechanism.controller.protocol={{ upper $mechanism }}
+sasl.mechanism={{ upper $mechanism }}
+security.protocol=SASL_PLAINTEXT
+#listener.name.{{lower $listener.name}}.sasl.enabled.mechanisms={{ upper $mechanism }}
+#listener.name.{{lower $listener.name}}.{{lower $mechanism }}.sasl.jaas.config={{ join " " $saslJaasConfig }};
+#sasl.jaas.config={{ join " " $saslJaasConfig }};
 {{- if regexFind "OAUTHBEARER" (upper $mechanism) }}
-listener.name.{{lower $listener.name}}.oauthbearer.sasl.server.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerValidatorCallbackHandler
-listener.name.{{lower $listener.name}}.oauthbearer.sasl.login.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler
+#listener.name.{{lower $listener.name}}.oauthbearer.sasl.server.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerValidatorCallbackHandler
+#listener.name.{{lower $listener.name}}.oauthbearer.sasl.login.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -119,7 +122,12 @@ Init container definition for Kafka initialization
     - -ec
     - |
       echo "Configuring Connect environment"
+      curl --silent -Lo /connectors/jq https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64
+      chmod +x /connectors/jq
       /scripts-connect/kafka-init-connect.sh
+      /scripts-connect/kafka-download.sh
+
+      echo "Configiration completed successfully."
   env:
     - name: BITNAMI_DEBUG
       value: {{ ternary "true" "false" (or .context.Values.image.debug .context.Values.diagnosticMode.enabled) | quote }}
@@ -321,4 +329,92 @@ Init container definition for Kafka initialization
       mountPath: /configmaps-connect
     - name: scripts-connect
       mountPath: /scripts-connect
+    - name: kafka-connectors
+      mountPath: /connectors
+{{- end -}}
+
+
+{{/*
+Section of the server.properties configmap shared by both controller-eligible and broker nodes
+*/}}
+{{- define "kafka.commonConnectConfig" -}}
+{{- if or (include "kafka.saslEnabled" .) }}
+#sasl.enabled.mechanisms={{ upper .Values.sasl.enabledMechanisms }}
+{{- end }}
+# Interbroker configuration
+#inter.broker.listener.name={{ .Values.listeners.interbroker.name }}
+{{- if regexFind "SASL" (upper .Values.listeners.interbroker.protocol) }}
+#sasl.mechanism.inter.broker.protocol={{ upper .Values.sasl.interBrokerMechanism }}
+{{- end }}
+{{- if (include "kafka.sslEnabled" .) }}
+# TLS configuration
+ssl.keystore.type=JKS
+ssl.truststore.type=JKS
+ssl.keystore.location=/opt/bitnami/kafka/config/certs/kafka.keystore.jks
+ssl.truststore.location=/opt/bitnami/kafka/config/certs/kafka.truststore.jks
+#ssl.keystore.password=
+#ssl.truststore.password=
+#ssl.key.password=
+ssl.client.auth={{ .Values.tls.sslClientAuth }}
+ssl.endpoint.identification.algorithm={{ .Values.tls.endpointIdentificationAlgorithm }}
+{{- end }}
+{{- if (include "kafka.saslEnabled" .) }}
+# Listeners SASL JAAS configuration
+{{- $listeners := list .Values.listeners.interbroker }}
+{{- range $i := .Values.listeners.extraListeners }}
+{{- $listeners = append $listeners $i }}
+{{- end }}
+{{- if .Values.externalAccess.enabled }}
+{{- $listeners = append $listeners .Values.listeners.external }}
+{{- end }}
+{{- range $listener := $listeners }}
+{{- if and $listener.sslClientAuth (regexFind "SSL" (upper $listener.protocol)) }}
+listener.name.{{lower $listener.name}}.ssl.client.auth={{ $listener.sslClientAuth }}
+{{- end }}
+{{- if regexFind "SASL" (upper $listener.protocol) }}
+#- range $mechanism := ( splitList "," $.Values.sasl.enabledMechanisms )
+{{- range $mechanism := ( splitList "," $.Values.sasl.interBrokerMechanism )}}
+  {{- $securityModule := include "kafka.saslSecurityModuleConnect" (dict "mechanism" (upper $mechanism)) }}
+  {{- $saslJaasConfig := list $securityModule }}
+  {{- if eq $listener.name $.Values.listeners.interbroker.name }}
+  {{- if (eq (upper $mechanism) "OAUTHBEARER") }}
+  {{- $saslJaasConfig = append $saslJaasConfig (printf "clientId=\"%s\"" $.Values.sasl.interbroker.clientId) }}
+  {{- $saslJaasConfig = append $saslJaasConfig (print "clientSecret=\"interbroker-client-secret-placeholder\"") }}
+#listener.name.{{lower $listener.name}}.oauthbearer.sasl.login.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler
+  {{- else }}
+  {{- $saslJaasConfig = append $saslJaasConfig (printf "username=\"%s\"" $.Values.sasl.interbroker.user) }}
+  {{- $saslJaasConfig = append $saslJaasConfig (print "password=\"interbroker-password-placeholder\"") }}
+  {{- end }}
+  {{- end }}
+  {{- if eq (upper $mechanism) "PLAIN" }}
+  {{- range $i, $user := $.Values.sasl.client.users }}
+  {{- $saslJaasConfig = append $saslJaasConfig (printf "username=\"%s\"" $user ) }}
+  {{- $saslJaasConfig = append $saslJaasConfig (printf "password=\"password-placeholder-%d\"" (int $i)) }}
+  {{- end }}
+  {{- end }}
+sasl.jaas.config={{ join " " $saslJaasConfig }};
+  {{- if eq (upper $mechanism) "OAUTHBEARER" }}
+#listener.name.{{lower $listener.name}}.oauthbearer.sasl.server.callback.handler.class=org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerValidatorCallbackHandler
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if regexFind "OAUTHBEARER" $.Values.sasl.enabledMechanisms }}
+sasl.oauthbearer.token.endpoint.url={{ $.Values.sasl.oauthbearer.tokenEndpointUrl }}
+sasl.oauthbearer.jwks.endpoint.url={{ $.Values.sasl.oauthbearer.jwksEndpointUrl }}
+sasl.oauthbearer.expected.audience={{ $.Values.sasl.oauthbearer.expectedAudience }}
+sasl.oauthbearer.sub.claim.name={{ $.Values.sasl.oauthbearer.subClaimName }}
+{{- end }}
+# End of SASL JAAS configuration
+{{- end }}
+{{- end -}}
+
+
+{{/*
+Returns the security module based on the provided sasl mechanism
+*/}}
+{{- define "kafka.saslSecurityModuleConnect" -}}
+{{- if eq "PLAIN" .mechanism -}}
+org.apache.kafka.common.security.plain.PlainLoginModule required
+{{- end -}}
 {{- end -}}

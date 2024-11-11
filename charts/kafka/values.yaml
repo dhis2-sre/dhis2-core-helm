@@ -278,6 +278,8 @@ kafka:
                     mountPath: {{ .Values.controller.persistence.mountPath }}
                   - name: logs
                     mountPath: {{ .Values.controller.logPersistence.mountPath }}
+                  - name: kafka-connectors
+                    mountPath: /opt/connectors
               {{- end }}
               {{- if and .Values.externalAccess.enabled .Values.externalAccess.autoDiscovery.enabled (or .Values.externalAccess.controller.forceExpose (not .Values.controller.controllerOnly))}}
               {{- include "kafka.autoDiscoveryInitContainer" ( dict "role" "controller" "context" $) | nindent 8 }}
@@ -307,8 +309,14 @@ kafka:
                 {{- else if .Values.controller.args }}
                 args: {{- include "common.tplvalues.render" (dict "value" .Values.controller.args "context" $) | nindent 12 }}
                 {{- end }}
-                command: ["/bin/bash", "-c"]
-                args: ["/opt/bitnami/kafka/bin/connect-distributed.sh /opt/bitnami/kafka/config/connect-distributed.properties"]
+                command: 
+                  - /bin/bash
+                args:
+                  - -ec 
+                  - |
+                    /opt/bitnami/kafka/bin/connect-distributed.sh /opt/bitnami/kafka/config/connect-distributed.properties
+                    /scripts-connect/kafka-connectors.sh
+
                 env:
                   - name: BITNAMI_DEBUG
                     value: {{ ternary "true" "false" (or .Values.image.debug .Values.diagnosticMode.enabled) | quote }}
@@ -457,6 +465,8 @@ kafka:
                 volumeMounts:
                   - name: kafka-plugins
                     mountPath: /opt/bitnami/kafka/plugins
+                  - name: kafka-connectors
+                    mountPath: /opt/connectors
                   - name: data
                     mountPath: {{ .Values.controller.persistence.mountPath }}
                   - name: logs
@@ -490,6 +500,11 @@ kafka:
                   - name: kafka-config-connect
                     mountPath: /opt/bitnami/kafka/config/connect-distributed.properties
                     subPath: connect-distributed.properties
+                  - name: kafka-configmaps-connect
+                    mountPath: /opt/bitnami/kafka/config/connector-config.json
+                    subPath: connector-config.json
+                  - name: scripts-connect
+                    mountPath: /scripts-connect
               {{- if .Values.metrics.jmx.enabled }}
               - name: jmx-exporter
                 image: {{ include "kafka.metrics.jmx.image" . }}
@@ -531,6 +546,8 @@ kafka:
               {{- end }}
             volumes:
               - name: kafka-plugins
+                emptyDir: {}
+              - name: kafka-connectors
                 emptyDir: {}
               - name: kafka-configmaps
                 configMap:
@@ -692,7 +709,7 @@ kafka:
           value.converter=org.apache.kafka.connect.json.JsonConverter
           plugin.path=/opt/connectors,/opt/bitnami/kafka/plugins
           # Additional configurations
-          listener.security.protocol.map={{ include "kafka.securityProtocolMap" . }}
+          #listener.security.protocol.map={{ include "kafka.securityProtocolMap" . }}
           {{- if .Values.kraft.enabled }}
           {{- include "kafka.kraftConnectConfig" . | nindent 4 }}
           {{- end }}
@@ -705,7 +722,7 @@ kafka:
           {{- end }}
 
           # Common Kafka Configuration
-          {{- include "kafka.commonConfig" . | nindent 4 }}
+          {{- include "kafka.commonConnectConfig" . | nindent 4 }}
 
           # Custom Kafka Configuration
           {{- include "common.tplvalues.render" ( dict "value" .Values.extraConfig "context" $ ) | nindent 4 }}
@@ -715,6 +732,41 @@ kafka:
         mongodb.properties: |-
           connection.uri=mongodb://root:password@mongodb-hostname:27017
           ...
+        connector-config.json: |  
+          [ 
+            {
+              "name": "starrocks-kafka-connector",
+              "config": {
+                "connector.class":"com.starrocks.connector.kafka.StarRocksSinkConnector",
+                "topics":"test",
+                "key.converter":"org.apache.kafka.connect.json.JsonConverter",
+                "value.converter":"org.apache.kafka.connect.json.JsonConverter",
+                "key.converter.schemas.enable":true,
+                "value.converter.schemas.enable":false,
+                "starrocks.http.url":"192.168.9.10:8030",
+                "starrocks.topic2table.map":"test:test_tbl",
+                "starrocks.username":"user1",
+                "starrocks.password":"123456",
+                "starrocks.database.name":"example_db",
+                "sink.properties.strip_outer_array":true
+              }
+            },
+            {
+              "name":"mongodb-source",
+              "config":{
+                "connection.uri":"mongodb://root:password@mongodb-hostname:27017",
+                "connector.class":"com.mongodb.kafka.connect.MongoSourceConnector",
+                "database":"test",
+                "collection":"test",
+                "output.format.value":"json",
+                "output.format.key":"json",
+                "key.converter.schemas.enable":"false",
+                "value.converter.schemas.enable":"false",
+                "key.converter":"org.apache.kafka.connect.json.JsonConverter",
+                "value.converter":"org.apache.kafka.connect.json.JsonConverter"
+              }
+            }
+          ]
       {{- end}}
 
     - |
@@ -731,6 +783,83 @@ kafka:
         annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
         {{- end }}
       data:
+        kafka-connectors.sh: |-
+          #!/bin/bash
+          
+          # Path to the mounted ConfigMap file
+          CONFIG_PATH="/opt/bitnami/kafka/config/connector-config.json"
+
+          # Kafka Connect REST endpoint
+          KAFKA_CONNECT_URL="http://{{ include "common.names.fullname" . }}-controller-connect-0:8083/connectors"
+
+          # Maximum wait time (seconds)
+          MAX_WAIT=60
+          WAIT_INTERVAL=5
+          WAITED=0
+          
+          echo "#######################"
+          echo "Waiting for Kafka Connect to be ready..."
+
+          # Loop to check if Kafka Connect is ready
+          until curl -s "$KAFKA_CONNECT_URL" >/dev/null 2>&1; do
+            # If Kafka Connect is still not ready, wait and retry
+            echo "Kafka Connect is not ready yet. Retrying in $WAIT_INTERVAL seconds..."
+            sleep $WAIT_INTERVAL
+            WAITED=$((WAITED + WAIT_INTERVAL))
+            
+            # Check if the wait time has exceeded the maximum
+            if [ "$WAITED" -ge "$MAX_WAIT" ]; then
+              echo "Kafka Connect did not become ready within $MAX_WAIT seconds. Exiting."
+              exit 1
+            fi
+          done
+
+          # If Kafka Connect is ready, proceed to execute the desired script
+          echo "Kafka Connect is ready. Executing connector load script..."
+          sleep 30
+          echo "###########################"
+          echo "Configuring Kafka Connectors"
+
+          CONFIG_PATH="/opt/bitnami/kafka/config/connector-config.json"
+          # Check if jq is installed
+          if ! command -v /opt/connectors/jq &> /dev/null; then
+            echo "Error: jq is not installed. Please install jq to proceed."
+            exit 1
+          fi
+
+          # Load connector configs and parse each item
+          if [ -f "$CONFIG_PATH" ]; then
+            connectors=$(cat "$CONFIG_PATH")
+            
+            # Use jq to parse and iterate through each connector config
+            echo "$connectors" | /opt/connectors/jq -c '.[]' | while read -r connector; do
+              # Extract connector name for log output
+              connector_name=$(echo "$connector" | /opt/connectors/jq -r '.name')
+              
+              # Send the connector config to Kafka Connect
+              response=$(curl -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" --data "$connector" "$KAFKA_CONNECT_URL")
+
+              if [ "$response" -eq 201 ]; then
+                echo "Connector $connector_name loaded successfully."
+              elif [ "$response" -eq 409 ]; then
+                echo "Connector $connector_name already exists. Skipping."
+              else
+                echo "Failed to load connector $connector_name. HTTP response code: $response"
+              fi
+            done
+          else
+            echo "Config file not found at $CONFIG_PATH!"
+            exit 1
+          fi
+          echo "Kafka Connectors configured successfully."
+          echo "################"
+          
+
+        kafka-download.sh: |-
+          #!/bin/bash
+          mkdir -p /connectors/starrocks-kafka-connector-1.0.4
+          curl --output /connectors/mongo-kafka-connect-1.13.1-all.jar --remote-name --location --silent https://search.maven.org/remotecontent?filepath=org/mongodb/kafka/mongo-kafka-connect/1.13.1/mongo-kafka-connect-1.13.1-all.jar
+          curl --output /connectors/starrocks-kafka-connector-1.0.4.tar.gz  --remote-name --location --silent https://github.com/StarRocks/starrocks-connector-for-kafka/releases/download/v1.0.4/starrocks-kafka-connector-1.0.4.tar.gz && tar -xvzf  /connectors/starrocks-kafka-connector-1.0.4.tar.gz -C /connectors && rm /connectors/starrocks-kafka-connector-1.0.4.tar.gz
         kafka-init-connect.sh: |-
           #!/bin/bash
 
@@ -1002,18 +1131,18 @@ kafka:
           # Configure node.id and/or broker.id
           if [[ -f "/bitnami/kafka/data/meta.properties" ]]; then
               if grep -q "broker.id" /bitnami/kafka/data/meta.properties; then
-                ID="$(grep "broker.id" /bitnami/kafka/data/meta.properties | awk -F '=' '{print $2}')"
+                ID="$(grep "broker.id" /bitnami/kafka/data/meta.properties | awk -F '=' '{print $2}') + {{ .Values.controller.replicaCount | default 0 }}"
                 {{- if or (and .Values.kraft.enabled (not .Values.broker.zookeeperMigrationMode)) (and (not .Values.zookeeper.enabled) (not .Values.externalZookeeper.servers)) }}
                 kafka_conf_set "$KAFKA_CONFIG_FILE" "node.id" "$ID"
                 {{- else }}
                 kafka_conf_set "$KAFKA_CONFIG_FILE" "broker.id" "$ID"
                 {{- end }}
               else
-                ID="$(grep "node.id" /bitnami/kafka/data/meta.properties | awk -F '=' '{print $2}')"
+                ID="$(grep "node.id" /bitnami/kafka/data/meta.properties | awk -F '=' '{print $2}') + {{ .Values.controller.replicaCount | default 0 }}"
                 kafka_conf_set "$KAFKA_CONFIG_FILE" "node.id" "$ID"
               fi
           else
-              ID=$((POD_ID + KAFKA_MIN_ID))
+              ID=$((POD_ID + KAFKA_MIN_ID + {{ .Values.controller.replicaCount | default 0 }}))
               {{- if .Values.kraft.enabled }}
               kafka_conf_set "$KAFKA_CONFIG_FILE" "node.id" "$ID"
               {{- end }}
