@@ -1,25 +1,24 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "dhis2-core-helm.fullname" . }}
   labels:
     {{- include "dhis2-core-helm.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "dhis2-core-helm.fullname" . }}-hl
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
-  minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
       {{- include "dhis2-core-helm.selectorLabels" . | nindent 6 }}
-  updateStrategy:
+  strategy:
     type: {{ .Values.strategy.type }}
     {{- if eq .Values.strategy.type "RollingUpdate" }}
     rollingUpdate:
-      partition: {{ .Values.strategy.rollingUpdate.partition }}
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
       maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
     {{- end }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -42,24 +41,12 @@ spec:
       serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       initContainers:
         - name: dhis2-home-permissions
           image: busybox
           command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
           volumeMounts:
-            - name: {{ include "dhis2-core-helm.fullname" . }}
+            - name: dhis-home
               mountPath: /dhis-home
       containers:
         - name: {{ .Chart.Name }}
@@ -94,7 +81,7 @@ spec:
               path: {{ .Values.readinessProbe.path }}
               port: http
           volumeMounts:
-            - name: {{ include "dhis2-core-helm.fullname" . }}
+            - name: dhis-home
               mountPath: {{ .Values.dhis2Home }}
               readOnly: false
             - name: dhis-conf
@@ -112,6 +99,13 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+        - name: dhis-home
+{{- if .Values.storage.persisted }}
+          persistentVolumeClaim:
+            claimName: {{ include "dhis2-core-helm.fullname" . }}
+{{ else }}
+          emptyDir: { }
+{{- end }}
         - name: dhis-conf
           configMap:
             name: {{ include "dhis2-core-helm.fullname" . }}
@@ -136,17 +130,15 @@ spec:
             items:
               - key: log4j2.xml
                 path: log4j2.xml
-  {{- if .Values.storage.persisted }}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ include "dhis2-core-helm.fullname" . }}
-        labels:
-          {{- include "dhis2-core-helm.labels" . | nindent 10 }}
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.storage.volumeSize }}
-        storageClassName: {{ .Values.storage.className }}
-  {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
