@@ -3,6 +3,33 @@ entries:
   core:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-11-11T19:14:23.31495243Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql-dhis2.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~15
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: eda39eee5e72c3459b6e00c147066df780340519c99fa1673ef75fed80c800d6
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.33/core-1.0.33.tgz
+    version: 1.0.33
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-11-11T13:27:19.586705086Z"
     dependencies:
     - condition: redis.enabled
@@ -899,4 +926,4 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.0/kafka-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-11T13:27:19.748604077Z"
+generated: "2024-11-11T19:14:23.430548204Z"
