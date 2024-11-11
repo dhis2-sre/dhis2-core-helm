@@ -100,11 +100,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: dhis-home
-{{- if .Values.storage.persisted }}
+{{- if not (hasKey .Values "minIOConfig") }}
           persistentVolumeClaim:
             claimName: {{ include "dhis2-core-helm.fullname" . }}
-{{ else }}
-          emptyDir: { }
 {{- end }}
         - name: dhis-conf
           configMap:

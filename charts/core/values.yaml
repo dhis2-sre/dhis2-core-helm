@@ -4,7 +4,6 @@
 commonLabels: {}
 
 storage:
-  persisted: true
   volumeSize: 1Gi
   className: ~
 
@@ -25,6 +24,14 @@ dhisConfig: |
   connection.schema = update
   # Server base URL
   server.base.url = https://dhis2-core.127.0.0.1.nip.io/
+
+#minIOConfig: |
+#  filestore.provider = s3
+#  filestore.container = dhis2
+#  filestore.endpoint = http://minio.dhis2.svc:9000
+#  filestore.location = eu-west-1
+#  filestore.identity = dhisdhis
+#  filestore.secret = dhisdhis
 
 dhis2Home: /opt/dhis2
 
@@ -58,7 +65,7 @@ image:
   repository: dhis2/core
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2.40.2
+  tag: 41
 
 imagePullSecrets: []
 nameOverride: ""
