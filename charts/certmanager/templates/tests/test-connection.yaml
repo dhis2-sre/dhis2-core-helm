@@ -1,9 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "certmanager.fullname" . }}-test-connection"
-  labels:
-    {{- include "certmanager.labels" . | nindent 4 }}
+  name: issuer-test-connection"
   annotations:
     "helm.sh/hook": test
 spec:
