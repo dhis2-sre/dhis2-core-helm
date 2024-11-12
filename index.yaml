@@ -3,6 +3,16 @@ entries:
   certmanager:
   - apiVersion: v2
     appVersion: 1.16.1
+    created: "2024-11-12T17:20:53.944645225Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: fd373fc676a8d3ec6c740114d81e3fb91a65c8a7d891fb08c1660016e34cf45c
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.3/certmanager-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.1
     created: "2024-11-12T17:16:00.676445983Z"
     description: A Security Helm chart for Kubernetes implementing cert-manager
     digest: 3e239f3884574eb6a81dc018f5d445642a2be0492909da66daf35aed1055c159
@@ -1065,4 +1075,4 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.0/kafka-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-12T17:16:00.820027421Z"
+generated: "2024-11-12T17:20:54.065223903Z"
