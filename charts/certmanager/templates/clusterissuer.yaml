@@ -1,0 +1,33 @@
+{{- if .Values.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: le-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: le-staging-issuer-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik
+{{- end }}
+---
+
+{{- if .Values.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: le-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: le-prod-issuer-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik
+
+{{- end }}

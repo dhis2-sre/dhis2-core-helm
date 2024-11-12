@@ -1,4 +1,4 @@
-# DHIS2 Helm Chart
+# DHIS2 Extended Dashboard Helm Chart
 
 ## Configuration
 
@@ -6,13 +6,8 @@ Ensure the `KUBECONFIG` environment variable is pointing to a valid Kubernetes c
 
 If you don't have a cluster available, one can be created using [this](https://github.com/bombeke/im-cluster) project.
 
-## Launch
 
-```bash
-skaffold dev
-```
-
-## Helm
+## Installing DHIS2 Core Helm
 
 [DHIS2 core helm chart](./charts/core) is published to
 https://bombeke.github.io/dhis2-helm
@@ -28,7 +23,29 @@ helm search repo dhis2/core --versions
 The versions returned are gathered from [index.yaml](./index.yaml) which is
 published to [this GitHub page](https://bombeke.github.io/dhis2-helm/index.yaml).
 
-### Release
+## Installing CertManager
+Add repository and install chart
+```sh
+helm repo add jetstack https://charts.jetstack.io --force-update
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.16.1 \
+  --set crds.enabled=true
+```
+Deploy the certificate Issuer
+```sh
+helm upgrade cert-manager --namespace cert-manager dhis2/certmanager --set enabled=true
+```
+
+Add the annotations to Ingress
+```
+ annotations:
+   cert-manager.io/cluster-issuer: "le-staging"
+   ...
+```
+### Release a chart e.g core
 
 Bump the version in [Chart.yaml](./charts/core/Chart.yaml), commit and push.
 **NOTE: do not create a tag yourself!**
