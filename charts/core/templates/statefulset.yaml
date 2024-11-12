@@ -86,21 +86,27 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
           startupProbe:
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}
             httpGet:
               path: {{ .Values.startupProbe.path }}
               port: http
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: http
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.readinessProbe.path }}
               port: http
+          {{- end }}
           volumeMounts:
             - name: {{ include "dhis2-helm.fullname" . }}
               mountPath: {{ .Values.dhis2Home }}
