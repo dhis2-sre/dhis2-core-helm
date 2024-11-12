@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta25
+apiVersion: skaffold/v4beta6
 kind: Config
 deploy:
   statusCheckDeadlineSeconds: 420
@@ -13,9 +13,19 @@ deploy:
         valuesFiles:
           - ./postgresql.yaml
 
+      - name: minio
+        namespace: dhis2
+        createNamespace: true
+        remoteChart: minio
+        repo: https://charts.bitnami.com/bitnami
+        version: 14.7.5
+        useHelmSecrets: true
+        valuesFiles:
+          - ./minio.yaml
+
       - name: dhis2-core
         namespace: dhis2
         createNamespace: true
         chartPath: charts/core
-#        valuesFiles:
-#          - ./dhis2.yaml
+        valuesFiles:
+          - ./dhis2.yaml

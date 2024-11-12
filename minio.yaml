@@ -1,0 +1,9 @@
+persistence:
+#  size: 8Gi
+  annotations:
+    helm.sh/resource-policy: keep
+auth:
+    rootUser: dhisdhis
+    rootPassword: dhisdhis
+    forcePassword: true
+defaultBuckets: dhis2

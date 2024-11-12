@@ -7,6 +7,7 @@ metadata:
 data:
   dhis.conf: |
     {{- .Values.dhisConfig | nindent 4 }}
+    {{- .Values.minIOConfig | nindent 4 }}
   log4j2.xml: |
     {{- .Files.Get .Values.log4j2 | nindent 4 }}
   server.xml: |
