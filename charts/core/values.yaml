@@ -24,7 +24,6 @@ dhisConfig: |
   connection.url = jdbc:postgresql://dhis2app-postgresql.default.svc.cluster.local:5432/dhis2
   connection.username = dhis2
   connection.password = dhis2
-  connection.schema = update
 
   system.base_url = http://localhost:8080
 
@@ -33,20 +32,20 @@ dhisConfig: |
   audit.database = off
   audit.logger = off
 
-  #amqp.mode =${DHIS2_MQ_MODE}
-  #amqp.host =${DHIS2_MQ_HOST}
-  #amqp.port =${DHIS2_MQ_PORT}
-  #amqp.exchange =${DHIS2_MQ_EXCHANGE}
-  #amqp.username =${DHIS2_MQ_USER}
-  #amqp.password =${DHIS2_MQ_PASS}
-  #leader.time.to.live.minutes=${DHIS2_REDIS_TTL}
-  audit.metadata = "DISABLED"
-  audit.tracker = "DISABLED"
-  audit.aggregate = "DISABLED"
-  redis.enabled = false
-  #redis.host =${DHIS2_REDIS_USER}
-  #redis.port =${DHIS2_REDIS_PORT}
-  #redis.password =${DHIS2_REDIS_PASS}
+  #amqp.mode = EMBEDDED
+  #amqp.host = localhost
+  #amqp.port = 5672
+  #amqp.exchange = dhis2
+  #amqp.username = guest
+  #amqp.password = guest
+  #leader.time.to.live.minutes = 4
+  audit.metadata = DISABLED
+  audit.tracker = DISABLED
+  audit.aggregate = DISABLED
+  #redis.enabled = false
+  #redis.host = localhost
+  #redis.port = 6379
+  #redis.password = guest
 
   # PAT enable
   enable.api_token.authentication = on
@@ -84,7 +83,7 @@ dhisConfig: |
   # ----------------------------------------------------------------------
 
   # System monitoring URL
-  system.monitoring.url = "http://localhost"
+  system.monitoring.url =
 
   # System monitoring username
   system.monitoring.username = user
@@ -310,13 +309,16 @@ javaOpts: ""
 
 minReadySeconds: 120
 startupProbe: # 2min10s (26 * 5 = 130s)
+  enabled: true
   failureThreshold: 26
   periodSeconds: 5
   path: /
 livenessProbe:
+  enabled: true
   timeoutSeconds: 1
   path: /
 readinessProbe:
+  enabled: true
   path: /
 
 replicaCount: 1
@@ -331,7 +333,7 @@ image:
   repository: talexie/dhis2
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 41.1.0-jdk17-t9
+  tag: 41.2.0-jdk17-t9
 
 imagePullSecrets: []
 nameOverride: ""
@@ -431,8 +433,8 @@ postgresql:
             echo "Customizing Scripts for deployment"
             # Perform all actions as $POSTGRES_USER
             export PGPASSWORD=$POSTGRES_POSTGRES_PASSWORD
-            # export POSTGRES_DB=$POSTGRES_DATABASE # for Pg15 and above
-            export POSTGRES_DB=$POSTGRES_DB # for Pg15 and above
+            export POSTGRES_DB=$POSTGRES_DATABASE # for Pg15 and above
+            #export POSTGRES_DB=$POSTGRES_DB # for Pg14 and below
             echo "Executing settings on $POSTGRES_DB"
 
             psql -v ON_ERROR_STOP=1 -U postgres --dbname "$POSTGRES_DB" <<-EOSQL
