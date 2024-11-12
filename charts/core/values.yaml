@@ -369,7 +369,8 @@ service:
   port: 8080
 
 ingress:
-  enabled: true
+  enabled: true,
+  certIssuer: le-staging
   hostname: "dhis2.default.svc.cluster.local"
   path: /
   # certIssuer: letsencrypt-staging | letsencrypt-prod
