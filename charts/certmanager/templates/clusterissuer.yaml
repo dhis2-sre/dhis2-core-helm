@@ -1,13 +1,13 @@
 {{- if .Values.enabled }}
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: le-staging
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: le-staging-issuer-key
+      name: le-staging-clusterissuer-key
     solvers:
       - http01:
           ingress:
@@ -17,14 +17,14 @@ spec:
 
 {{- if .Values.enabled }}
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: le-prod
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: le-prod-issuer-key
+      name: le-prod-clusterissuer-key
     solvers:
       - http01:
           ingress:
