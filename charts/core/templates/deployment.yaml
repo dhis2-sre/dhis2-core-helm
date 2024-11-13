@@ -45,7 +45,7 @@ spec:
       initContainers:
         - name: dhis2-home-permissions
           image: busybox
-          command: [ 'sh', '-c', 'mkdir /dhis-home && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
+          command: [ 'sh', '-c', 'mkdir -p /dhis-home && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
           volumeMounts:
             - name: dhis-home
               mountPath: /dhis-home
