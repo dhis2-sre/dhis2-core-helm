@@ -12,6 +12,10 @@ If you don't have a cluster available, one can be created using [this](https://g
 skaffold dev
 ```
 
+## Launch with MinIO
+* Uncomment the minio section in dhis2.yaml
+* Uncomment the minio section in skaffold.yaml
+
 ## Helm
 
 [DHIS2 core helm chart](./charts/core) is published to
