@@ -41,13 +41,15 @@ spec:
       serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+{{- if not (hasKey .Values "minIOConfig") }}
       initContainers:
         - name: dhis2-home-permissions
           image: busybox
-          command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
+          command: [ 'sh', '-c', 'mkdir /dhis-home && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
           volumeMounts:
             - name: dhis-home
               mountPath: /dhis-home
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -81,9 +83,11 @@ spec:
               path: {{ .Values.readinessProbe.path }}
               port: http
           volumeMounts:
+{{- if not (hasKey .Values "minIOConfig") }}
             - name: dhis-home
               mountPath: {{ .Values.dhis2Home }}
               readOnly: false
+{{- end }}
             - name: dhis-conf
               mountPath: {{ .Values.dhis2Home }}/dhis.conf
               subPath: dhis.conf
@@ -99,8 +103,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: dhis-home
 {{- if not (hasKey .Values "minIOConfig") }}
+        - name: dhis-home
           persistentVolumeClaim:
             claimName: {{ include "dhis2-core-helm.fullname" . }}
 {{- end }}

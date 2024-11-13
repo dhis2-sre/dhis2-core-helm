@@ -3,10 +3,6 @@
 # Declare variables to be passed into your templates.
 commonLabels: {}
 
-storage:
-  volumeSize: 1Gi
-  className: ~
-
 googleAuth:
   projectId: ""
   privateKeyId: ""
@@ -24,6 +20,11 @@ dhisConfig: |
   connection.schema = update
   # Server base URL
   server.base.url = https://dhis2-core.127.0.0.1.nip.io/
+
+## If MinIO is configured then the following configuration is ignored and no pvc will be created
+storage:
+  volumeSize: 8Gi
+  className: ~
 
 #minIOConfig: |
 #  filestore.provider = s3

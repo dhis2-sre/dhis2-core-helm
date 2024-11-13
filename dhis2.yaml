@@ -1,10 +1,10 @@
-minIOConfig: |
-  filestore.provider = s3
-  filestore.container = dhis2
-  filestore.endpoint = http://minio.dhis2.svc:9000
-  filestore.location = eu-west-1
-  filestore.identity = dhisdhis
-  filestore.secret = dhisdhis
+#minIOConfig: |
+#  filestore.provider = s3
+#  filestore.container = dhis2
+#  filestore.endpoint = http://dhis2-minio.dhis2.svc:9000
+#  filestore.location = eu-west-1
+#  filestore.identity = dhisdhis
+#  filestore.secret = dhisdhis
 
 # TODO: Remove before merge
 ingress:

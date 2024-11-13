@@ -13,15 +13,15 @@ deploy:
         valuesFiles:
           - ./postgresql.yaml
 
-      - name: minio
-        namespace: dhis2
-        createNamespace: true
-        remoteChart: minio
-        repo: https://charts.bitnami.com/bitnami
-        version: 14.7.5
-        useHelmSecrets: true
-        valuesFiles:
-          - ./minio.yaml
+#      - name: dhis2-minio
+#        namespace: dhis2
+#        createNamespace: true
+#        remoteChart: minio
+#        repo: https://charts.bitnami.com/bitnami
+#        version: 14.7.5
+#        useHelmSecrets: true
+#        valuesFiles:
+#          - ./minio.yaml
 
       - name: dhis2-core
         namespace: dhis2
