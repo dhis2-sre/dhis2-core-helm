@@ -36,7 +36,7 @@ helm install \
 ```
 Deploy the certificate Issuer
 ```sh
-helm upgrade cert-manager --namespace cert-manager dhis2/certmanager --set enabled=true
+helm install certmanagerissuer --namespace cert-manager dhis2/certmanager --set enabled=true
 ```
 
 Add the annotations to Ingress
