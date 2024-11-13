@@ -418,7 +418,7 @@ postgresql:
     username: dhis2
     postgresPassword: password
   backup:
-    enabled: false
+    enabled: true
   primary:
     livenessProbe:
       enabled: false
@@ -439,12 +439,12 @@ postgresql:
             echo "Executing settings on $POSTGRES_DB"
 
             psql -v ON_ERROR_STOP=1 -U postgres --dbname "$POSTGRES_DB" <<-EOSQL
-                --alter system set max_connections = 200;
-                --alter system set shared_buffers = '3GB';
-                --alter system set work_mem = '24MB';
-                --alter system set maintenance_work_mem = '1GB';
-                --alter system set temp_buffers = '16MB';
-                --alter system set effective_cache_size = '4GB';
+                alter system set max_connections = 200;
+                alter system set shared_buffers = '3GB';
+                alter system set work_mem = '24MB';
+                alter system set maintenance_work_mem = '1GB';
+                alter system set temp_buffers = '16MB';
+                alter system set effective_cache_size = '4GB';
                 alter system set checkpoint_completion_target = 0.8;
                 alter system set synchronous_commit = 'off';
                 alter system set wal_writer_delay = '10s';
