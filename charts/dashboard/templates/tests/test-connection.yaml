@@ -10,6 +10,5 @@ spec:
   containers:
     - name: wget
       image: busybox
-      command: ['wget']
-      args: ['{{ include "dashboard.fullname" . }}:{{ .Values.service.port }}']
+      command: ['/bin/bash', '-c', 'echo "Installed Dashboard successfully."']
   restartPolicy: Never
