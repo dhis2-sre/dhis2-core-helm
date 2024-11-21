@@ -1,4 +1,4 @@
-{{- if not (hasKey .Values "minIOConfig") }}
+{{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

@@ -29,3 +29,9 @@ deploy:
         chartPath: charts/core
         valuesFiles:
           - ./dhis2.yaml
+        setValueTemplates:
+          ingress:
+            enabled: true
+            hostname: dhis2.dev.im.dhis2.org
+            path: /
+            certIssuer: cert-issuer-prod

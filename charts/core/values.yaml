@@ -26,10 +26,18 @@ storage:
   volumeSize: 8Gi
   className: ~
 
+## minIOConfig and S3Config are mutually exclusive make sure to only set one of them
 #minIOConfig: |
 #  filestore.provider = s3
 #  filestore.container = dhis2
 #  filestore.endpoint = http://minio.dhis2.svc:9000
+#  filestore.location = eu-west-1
+#  filestore.identity = dhisdhis
+#  filestore.secret = dhisdhis
+
+#S3Config: |
+#  filestore.provider = aws-s3
+#  filestore.container = dhis2
 #  filestore.location = eu-west-1
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
