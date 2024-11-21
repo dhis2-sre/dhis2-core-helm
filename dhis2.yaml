@@ -12,10 +12,3 @@
 #  filestore.location = eu-west-1
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
-
-# TODO: Remove before merge
-ingress:
-  enabled: true
-  hostname: dhis2.dev.im.dhis2.org
-  path: /
-  certIssuer: cert-issuer-prod
