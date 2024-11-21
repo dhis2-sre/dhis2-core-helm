@@ -6,6 +6,13 @@
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
 
+#S3Config: |
+#  filestore.provider = aws-s3
+#  filestore.container = dhis2
+#  filestore.location = eu-west-1
+#  filestore.identity = dhisdhis
+#  filestore.secret = dhisdhis
+
 # TODO: Remove before merge
 ingress:
   enabled: true

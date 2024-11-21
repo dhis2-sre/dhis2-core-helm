@@ -41,7 +41,7 @@ spec:
       serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-{{- if not (hasKey .Values "minIOConfig") }}
+{{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
       initContainers:
         - name: dhis2-home-permissions
           image: busybox
@@ -83,7 +83,7 @@ spec:
               path: {{ .Values.readinessProbe.path }}
               port: http
           volumeMounts:
-{{- if not (hasKey .Values "minIOConfig") }}
+{{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
             - name: dhis-home
               mountPath: {{ .Values.dhis2Home }}
               readOnly: false
@@ -103,7 +103,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-{{- if not (hasKey .Values "minIOConfig") }}
+{{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
         - name: dhis-home
           persistentVolumeClaim:
             claimName: {{ include "dhis2-core-helm.fullname" . }}
