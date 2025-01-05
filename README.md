@@ -45,6 +45,41 @@ Add the annotations to Ingress
    cert-manager.io/cluster-issuer: "le-staging"
    ...
 ```
+## Installing Starrocks Datawarehouse
+```
+starrocks:
+    initPassword:
+        enabled: true
+        # Set a password secret, for example:
+        # kubectl create secret generic starrocks-root-pass --from-literal=password='g()()dpa$$word'
+        passwordSecret: starrocks-root-pass
+
+    starrocksFESpec:
+        replicas: 3
+        service:
+            type: LoadBalancer
+        resources:
+            requests:
+                cpu: 1
+                memory: 1Gi
+        storageSpec:
+            name: fe
+
+    starrocksBeSpec:
+        replicas: 3
+        resources:
+            requests:
+                cpu: 1
+                memory: 2Gi
+        storageSpec:
+            name: be
+            storageSize: 15Gi
+
+    starrocksFeProxySpec:
+        enabled: true
+        service:
+            type: LoadBalancer
+```
 ### Release a chart e.g core
 
 Bump the version in [Chart.yaml](./charts/core/Chart.yaml), commit and push.

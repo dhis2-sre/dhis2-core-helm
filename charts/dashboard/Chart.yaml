@@ -11,6 +11,15 @@ dependencies:
     version: "~0"
     repository: "https://trinodb.github.io/charts"
     condition: trino.enabled
+  - name: kube-starrocks
+    version: "~1"
+    repository: "https://starrocks.github.io/starrocks-kubernetes-operator"
+    condition: kube-starrocks.enabled
+  - name: drupal
+    version: "~21"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: drupal.enabled
+
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
