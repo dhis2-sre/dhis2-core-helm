@@ -48,7 +48,7 @@ spec:
             - name: grpc
               containerPort: 8001
             - name: metrics
-            - containerPort: 8002
+              containerPort: 8002
 
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}

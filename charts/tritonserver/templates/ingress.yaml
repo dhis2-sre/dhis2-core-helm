@@ -55,6 +55,7 @@ metadata:
   name: {{ include "tritonserver.fullname" . }}
   labels:
     {{- include "tritonserver.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
