@@ -1149,4 +1149,26 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.0/kafka-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-13T09:53:06.667683073Z"
+  smartai:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-18T19:21:34.526404461Z"
+    description: A Helm chart for Kubernetes
+    digest: 2fe42dcdf6a896da655b5f6d1396a76dd4702ab44566e4688b2f83d3dbfce3ae
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.1/smartai-0.1.1.tgz
+    version: 0.1.1
+  tritonserver:
+  - apiVersion: v2
+    appVersion: 24.12.0
+    created: "2025-01-18T19:21:34.662645166Z"
+    description: A Helm chart for Kubernetes
+    digest: 0267f2d86f574a786510976b5b5f2a2f41675045b615600e410a872b2ab7b75e
+    name: tritonserver
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/tritonserver-0.1.1/tritonserver-0.1.1.tgz
+    version: 0.1.1
+generated: "2025-01-18T19:21:34.662763927Z"
