@@ -5,8 +5,128 @@
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: nginx
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+#This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ 
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+#This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+# Apache Superset Chart configuration
 superset:
   enabled: true
+  image:
+    repository: talexie/superset
+    tag: 4.1.1-6
   postgresql:
     enabled: true
     #debug: true
@@ -17,21 +137,64 @@ superset:
       postgresqlPassword: superset
     image:
       tag: 17.0.0-debian-12-r9
+  ingress:
+    enabled: true
+    ingressClassName: ~
+    annotations:
+      # kubernetes.io/tls-acme: "true"
+      ## Extend timeout to allow long running queries.
+      # nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+      # nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      # nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+      cert-manager.io/cluster-issuer: le-staging
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    path: /
+    pathType: ImplementationSpecific
+    hosts:
+      - superset.default.svc.cluster.local
+
+  init:
+    loadExamples: false
+
+  extraSecretEnv:
+    SUPERSET_SECRET_KEY: thisISaSECRET_1234
 
   configOverrides:
     sql_connect: |
       SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Values.postgresql.fullnameOverride }}:5432/{{ .Values.postgresql.auth.database }}"
     secret: |
+      from superset.constants import CHANGE_ME_SECRET_KEY
       print(f"Setting up secret key for Superset for {{ .Values.postgresql.auth.username }}")
-      SUPERSET_SECRET= os.getenv("SECRET_KEY","thisISaSECRET_1234")
-
-      if SUPERSET_SECRET == "thisISaSECRET_1234":
+      SECRET_KEY= os.getenv("SECRET_KEY") or os.getenv("SUPERSET_SECRET_KEY") or CHANGE_ME_SECRET_KEY
+      if SECRET_KEY is None or SECRET_KEY == 'CHANGE_ME_TO_A_COMPLEX_RANDOM_SECRET' or SECRET_KEY =='thisISaSECRET_1234':
         import secrets
         import base64
         random_bytes = secrets.token_bytes(42)
-        SECRET_KEY = base64.b64encode(random_bytes).decode('utf-8')
+        # SECRET_KEY = base64.b64encode(random_bytes).decode('utf-8')
+        print(f"Set the Secret successfully.")
+        os.environ["SECRET_KEY"] = SECRET_KEY
+        os.environ["SUPERSET_SECRET_KEY"] = SECRET_KEY
       else:
-        pass
+        os.environ["SUPERSET_SECRET_KEY"] = SECRET_KEY
+      FEATURE_FLAGS: {
+        "ENABLE_TEMPLATE_PROCESSING": True,
+        "ALERT_REPORTS": True,
+        "ENABLE_ADVANCED_DATA_TYPES": True,
+        "DASHBOARD_NATIVE_FILTERS": True
+      }
+      ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
+      APP_NAME = "Bombeke Dashboard"
+      CACHE_CONFIG = {
+          'CACHE_TYPE': 'redis',
+          'CACHE_DEFAULT_TIMEOUT': 300,  # 5 minutes
+          'CACHE_KEY_PREFIX': 'superset_',
+          'CACHE_REDIS_URL': 'redis://localhost:6379/0'
+      }
+
+      SQLLAB_QUERY_CACHE_TIMEOUT = 300  # Query cache timeout
+      CACHE_DEFAULT_TIMEOUT = 300  
+      
+
 
   #supersetNode:
   #  connections:
@@ -51,12 +214,29 @@ superset:
   #extraEnv:
   #  - name: SUPERSET_DATABASE_URI
   #    value: "postgresql+psycopg2://<existing-db-username>:<existing-db-password>@<existing-db-host>:<existing-db-port>/<existing-db-name>"
+
   bootstrapScript: |
     #!/bin/bash
-    pip install psycopg2 \
-      trino \
-      shillelagh[genericjsonapi] \
-      sqlalchemy-solr &&\
+
+    echo "Downloading drivers"
+
+
+    curl --silent -Lo /app/superset/db_engine_specs/dhis2_api.py https://raw.githubusercontent.com/talexie/dhis2-docker/refs/heads/master/superset/dhis2_api.py
+    echo "Installed drivers successfully"
+
+    pip install psycopg2-binary \
+      Pillow \
+      polars \
+      shapely \
+      sqlglot[rs] \
+      duckdb \
+      duckdb-engine \
+      'shillelagh[genericjsonapi]' \
+      sqlalchemy-solr \
+      'sqlparse>0.5,<0.6.0' \
+      sqlalchemydhis2>=1.0.71 \
+      starrocks \
+      trino --retries 100 --timeout 60 && \
     if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
 
 trino:
@@ -67,3 +247,69 @@ trino:
     mongodb: |
       connector.name=mongodb
       mongodb.connection-url=mongodb://user:pass@sample.host:27017/
+
+drupal:
+  enabled: false
+  mariadb:
+    enabled: true
+    auth:
+      rootPassword: ""
+      password: ""
+  ingress:
+    enabled: true
+    hostname: "drupal.default.svc.cluster.local"
+    annotations:
+      #kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: le-staging
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    tls: true
+
+kube-starrocks:
+  enabled: false
+  operator:
+    starrocksOperator:
+      enabled: true
+      resources:
+        limits:
+          cpu: 100m # 500m
+          memory: 200Mi # 800Mi
+        requests:
+          cpu: 100m # 500m
+          memory: 400Mi # 400Mi
+
+  starrocks:
+    enabled: true
+    starrocksCluster:
+      enabledFe: true
+      enabledCn: false
+    initPassword:
+      enabled: true
+      # Set a password secret, for example:
+      # kubectl create secret generic starrocks-root-pass --from-literal=password='g()()dpa$$word'
+      passwordSecret: starrocks-root-pass
+
+    starrocksFESpec:
+      replicas: 3
+      resources:
+        requests:
+          cpu: 1
+          memory: 1Gi
+      storageSpec:
+        name: fe
+
+    starrocksBeSpec:
+      replicas: 3
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+      storageSpec:
+        name: be
+        storageSize: 15Gi
+    starrocksCnSpec:
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+    starrocksFeProxySpec:
+      enabled: true
