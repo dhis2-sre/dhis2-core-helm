@@ -1,0 +1,13 @@
+{{- if .Values.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "smartai.fullname" . }}
+  labels:
+    {{- include "smartai.labels" . | nindent 4 }}
+data: 
+  config.ini: |
+    {{- .Files.Get .Values.configIni | nindent 4 }}
+  cert_public.pem: |
+    {{- .Files.Get .Values.certPublicPem | nindent 4 }}
+{{- end }}   
