@@ -40,18 +40,41 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          {{- if .Values.enableReadinessCheck }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: {{ include "smartai.fullname" . }}
+              mountPath: {{ .Values.smartaiHome }}
+              readOnly: false
+            - name: config-ini
+              mountPath: {{ .Values.smartaiHome }}/config.ini
+              subPath: config.ini
+            - name: cert-public-pem
+              mountPath: {{ .Values.smartaiHome }}/cert_public.pem
+              subPath: cert_public.pem
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
+        - name: config
+          configMap:
+            name: {{ include "smartai.fullname" . }}
+            items:
+              - key: config.ini
+                path: config.ini
+        - name: cert_public
+          configMap:
+            name: {{ include "smartai.fullname" . }}
+            items:
+              - key: cert_public.pem
+                path: cert_public.pem
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
@@ -66,3 +89,17 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.storage.persisted }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "smartai.fullname" . }}
+        labels:
+          {{- include "smartai.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.storage.volumeSize }}
+        storageClassName: {{ .Values.storage.className }}
+  {{- end }}
