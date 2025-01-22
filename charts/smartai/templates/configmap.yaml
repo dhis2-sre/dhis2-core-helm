@@ -9,5 +9,5 @@ data:
   config.ini: |
     {{- .Values.configIni | nindent 4 }}
   cert_public.pem: |
-    {{- .Files.Get .Values.certPublicPem | nindent 4 }}
+    {{- .Values.certPublicPem | nindent 4 }}
 {{- end }}   
