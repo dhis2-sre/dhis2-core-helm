@@ -143,7 +143,7 @@ configIni: |
     url: "localhost"
     password: ""
 
-certPublicPem: cert_public.pem
+certPublicPem: ""
 
 # MongoDB dependency configuration
 mongodb:
