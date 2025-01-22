@@ -48,7 +48,7 @@ securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   #runAsNonRoot: true
   runAsUser: 1000
   runAsGroup: 65534
@@ -92,14 +92,14 @@ resources: {}
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
-enableReadinessCheck: false
-
 livenessProbe:
+  enabled: false
   httpGet:
     path: /
     port: http
 
 readinessProbe:
+  enabled: false
   httpGet:
     path: /
     port: http
