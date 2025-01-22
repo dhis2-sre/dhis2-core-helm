@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "smartai.fullname" . }}
   labels:
@@ -30,6 +30,13 @@ spec:
       serviceAccountName: {{ include "smartai.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: smartai-home-permissions
+          image: busybox
+          command: [ 'sh', '-c', 'chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.smartaiHome }} && chmod u+rw,go-rwx {{ .Values.smartaiHome }}' ]
+          volumeMounts:
+            - name: {{ include "smartai.fullname" . }}
+              mountPath: {{ .Values.smartaiHome }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -40,7 +47,7 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- if .Values.enableReadinessCheck }}
+          {{- if not .Values.enableReadinessCheck }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -48,35 +55,37 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+          
           volumeMounts:
             - name: {{ include "smartai.fullname" . }}
               mountPath: {{ .Values.smartaiHome }}
               readOnly: false
             - name: config-ini
-              mountPath: {{ .Values.smartaiHome }}/config.ini
+              mountPath: /opt/smartai/config.ini
               subPath: config.ini
             - name: cert-public-pem
               mountPath: {{ .Values.smartaiHome }}/cert_public.pem
               subPath: cert_public.pem
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      
       volumes:
-        - name: config
+        - name: config-ini
           configMap:
             name: {{ include "smartai.fullname" . }}
             items:
               - key: config.ini
                 path: config.ini
-        - name: cert_public
+        - name: cert-public-pem
           configMap:
             name: {{ include "smartai.fullname" . }}
             items:
               - key: cert_public.pem
                 path: cert_public.pem
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -14,7 +14,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.3"
+  tag: "1.0.4"
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -44,13 +44,15 @@ podLabels: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  readOnlyRootFilesystem: true
+  #runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 65534
+
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
@@ -134,8 +136,19 @@ tolerations: []
 
 affinity: {}
 
-smartaiHome: /opt/smartai
+smartaiHome: "/opt/smartai"
 
-configIni: config.ini
+configIni: |
+  database:
+    url: "localhost"
+    password: ""
 
 certPublicPem: cert_public.pem
+
+# MongoDB dependency configuration
+mongodb:
+  enabled: true
+  auth:
+    rootUser: admin
+    rootPassword: "admin"
+    enabled: true

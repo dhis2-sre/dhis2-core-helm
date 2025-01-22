@@ -131,6 +131,11 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+storage:
+  persisted: true
+  volumeSize: 1Gi
+  className: ~
+
 # Additional volumes on the output Deployment definition.
 volumes: []
 # - name: foo
