@@ -1211,6 +1211,21 @@ entries:
   smartai:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-22T10:41:41.415334709Z"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: A Helm chart for Kubernetes
+    digest: dd7a6d764d488f2e9a8c1c29e59e2bd6acdd66a3672566a3d0c8d2013b6f482a
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.7/smartai-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-01-22T09:23:52.634960925Z"
     dependencies:
     - condition: mongodb.enabled
@@ -1315,4 +1330,4 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/tritonserver-0.1.1/tritonserver-0.1.1.tgz
     version: 0.1.1
-generated: "2025-01-22T09:23:52.635066862Z"
+generated: "2025-01-22T10:41:41.415435758Z"
