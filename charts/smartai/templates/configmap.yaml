@@ -7,7 +7,7 @@ metadata:
     {{- include "smartai.labels" . | nindent 4 }}
 data: 
   config.ini: |
-    {{- .Files.Get .Values.configIni | nindent 4 }}
+    {{- .Values.configIni | nindent 4 }}
   cert_public.pem: |
     {{- .Files.Get .Values.certPublicPem | nindent 4 }}
 {{- end }}   

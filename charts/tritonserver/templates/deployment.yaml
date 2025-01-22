@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "tritonserver.fullname" . }}
   labels:
@@ -58,6 +58,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: models
+              mountPath: /models
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
@@ -76,3 +78,17 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.storage.persisted }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "tritonserver.fullname" . }}
+        labels:
+          {{- include "tritonserver.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.storage.volumeSize }}
+        storageClassName: {{ .Values.storage.className }}
+  {{- end }}
