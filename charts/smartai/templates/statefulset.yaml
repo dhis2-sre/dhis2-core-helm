@@ -68,6 +68,8 @@ spec:
             - name: cert-public-pem
               mountPath: {{ .Values.smartaiHome }}/cert_public.pem
               subPath: cert_public.pem
+            - name: smartai-data
+              mountPath: /pip-cache
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -85,6 +87,9 @@ spec:
             items:
               - key: cert_public.pem
                 path: cert_public.pem
+        - name: smartai-data
+          persisentVolumeClaim:
+            claimName: {{ include "smartai.fullname" . }}
         {{- with .Values.volumes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
