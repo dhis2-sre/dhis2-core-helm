@@ -8,4 +8,6 @@ metadata:
 data: 
   AppConfig.json: |
     {{- .Values.appConfig | nindent 4 }}
+  default.conf: |
+    {{- .Values.webConfig | nindent 4 }}
 {{- end }}   

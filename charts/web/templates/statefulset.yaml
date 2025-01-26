@@ -79,12 +79,18 @@ spec:
             - name: app-config-json
               mountPath: /usr/share/nginx/html/AppConfig.json
               subPath: AppConfig.json
+            - name: web-config-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       
       volumes:
         - name: app-config-json
+          configMap:
+            name: {{ include "web.fullname" . }}
+        - name: web-config-conf
           configMap:
             name: {{ include "web.fullname" . }}
       {{- with .Values.volumes }}
