@@ -7,22 +7,6 @@ Ensure the `KUBECONFIG` environment variable is pointing to a valid Kubernetes c
 If you don't have a cluster available, one can be created using [this](https://github.com/bombeke/im-cluster) project.
 
 
-## Installing DHIS2 Core Helm
-
-[DHIS2 core helm chart](./charts/core) is published to
-https://bombeke.github.io/dhis2-helm
-
-To install the chart you first need to add this chart repository
-
-```sh
-helm repo add dhis2 https://bombeke.github.io/dhis2-helm
-helm repo update
-helm search repo dhis2/core --versions
-```
-
-The versions returned are gathered from [index.yaml](./index.yaml) which is
-published to [this GitHub page](https://bombeke.github.io/dhis2-helm/index.yaml).
-
 ## Installing CertManager
 Add repository and install chart
 ```sh
@@ -45,6 +29,75 @@ Add the annotations to Ingress
    cert-manager.io/cluster-issuer: "le-staging"
    ...
 ```
+
+## Installing DHIS2 Core Helm
+
+[DHIS2 core helm chart](./charts/core) is published to
+https://bombeke.github.io/dhis2-helm
+
+To install the chart you first need to add this chart repository
+
+```sh
+helm repo add dhis2 https://bombeke.github.io/dhis2-helm
+helm repo update
+helm search repo dhis2/core --versions
+```
+
+## Installing SmartAI 
+[DHIS2 smartai helm chart](./charts/smartai) is published to
+https://bombeke.github.io/dhis2-helm
+
+To update dhis2-helm chart repository
+
+```sh
+helm repo update
+helm search repo dhis2/smartai --versions
+helm install smart dhis2/smartai -f values.yaml
+```
+Example smart values.yaml
+
+```yaml
+origins:
+ - "http://localhost:3000"
+ - "localhost:3000"
+ - "*"
+dhis2:
+ url: "https://dhis.example.com"
+ username: "username"
+ password: "password"
+vector:
+ dimension: 4096
+broker:
+ servers: "localhost:29092,localhost:39092,localhost:49092"
+ password: "password"
+ username: "username"
+auth:
+ auth_type: "casdoor"
+ redirect_uri: "http://localhost:3000/#/auth-callback"
+ real_name: "app-demo"
+ server: "https://auth1.example.com"
+ client_id: "94ce7d07f59820c8945f"
+ client_secret: "354d4372aee1000b304a5991f75bfbfa12de6b59"
+ org_name: "demo"
+ application_name: "app-demo"
+ certificate: "/opt/smartai/cert_public.pem"
+api:
+ server: "http://localhost:3000/#"
+database:
+ url: "localhost"
+ password: "password"
+```
+## Installing TritonServer for Inference (Community version)
+[DHIS2 Triton server helm chart](./charts/tritonserver) is published to
+https://bombeke.github.io/dhis2-helm
+
+To update dhis2-helm chart repository
+
+```sh
+helm repo update
+helm search repo dhis2/tritonserver --versions
+```
+
 ## Installing Starrocks Datawarehouse
 ```
 starrocks:
@@ -81,6 +134,10 @@ starrocks:
             type: LoadBalancer
 ```
 ### Release a chart e.g core
+
+
+The versions returned are gathered from [index.yaml](./index.yaml) which is
+published to [this GitHub page](https://bombeke.github.io/dhis2-helm/index.yaml).
 
 Bump the version in [Chart.yaml](./charts/core/Chart.yaml), commit and push.
 **NOTE: do not create a tag yourself!**

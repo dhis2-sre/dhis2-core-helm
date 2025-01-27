@@ -1,6 +1,1082 @@
 apiVersion: v1
 entries:
+  certmanager:
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-13T09:53:06.233018265Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: b45a3841042ad353b10ce870433b043fb45bc009fd1b0fbdfb84a8aa97d58659
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.5/certmanager-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-13T08:33:22.479894407Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: b5644738f02df0e57d77cf19eb403ed5d993c1d9a9cd7dbbfa11e02a78395fe3
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.4/certmanager-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-12T17:20:53.944645225Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: fd373fc676a8d3ec6c740114d81e3fb91a65c8a7d891fb08c1660016e34cf45c
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.3/certmanager-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-12T17:16:00.676445983Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: 3e239f3884574eb6a81dc018f5d445642a2be0492909da66daf35aed1055c159
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.2/certmanager-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-12T17:09:17.185955554Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: f7556b1c3c20194c209bfe387450be795d672977ce5e8002108ab28cbe3549ed
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.1/certmanager-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2024-11-12T16:58:02.220716509Z"
+    description: A Security Helm chart for Kubernetes implementing cert-manager
+    digest: d058d8c951a5921a67ceec12ceaf3bf19af9cb2a6f97b14a3a54f20eee874391
+    name: certmanager
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/certmanager-0.1.0/certmanager-0.1.0.tgz
+    version: 0.1.0
   core:
+  - apiVersion: v2
+    appVersion: 41.2.0
+    created: "2024-11-13T09:53:06.459388844Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~12
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: 08fde3bbcda066d161ef8ec2ea92b330332a62da6a54b02300f50a1b4c69493c
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.39/core-1.0.39.tgz
+    version: 1.0.39
+  - apiVersion: v2
+    appVersion: 41.2.0
+    created: "2024-11-12T17:29:29.761072732Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~12
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: c4ca5d9252a42b2bc34d89b9d094ed2a2ba356d12960dfb20647e98b665ff048
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.38/core-1.0.38.tgz
+    version: 1.0.38
+  - apiVersion: v2
+    appVersion: 41.2.0
+    created: "2024-11-12T10:10:37.389000847Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~12
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: 1eb5c8df748d33334b046154c6eced16a69cf85b5299fad23b59d4c93f7301c8
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.37/core-1.0.37.tgz
+    version: 1.0.37
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T20:47:08.569548646Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: bf7e28b53ad6c08eb3488b2b929ce295be0f4cc69e4391eb8b9b4b3f9805922b
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.36/core-1.0.36.tgz
+    version: 1.0.36
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T20:29:05.428208182Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: 2cdc9bbc69dd474276be96278712ee99f6392c138097da3865443b97059c3c05
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.35/core-1.0.35.tgz
+    version: 1.0.35
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T19:53:34.377083697Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~12
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: e0afcbb7a70d67319043f09680ef0b8117c2459b2fce3542d9848629e9b242c3
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.34/core-1.0.34.tgz
+    version: 1.0.34
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T19:14:23.31495243Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql-dhis2.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~15
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: eda39eee5e72c3459b6e00c147066df780340519c99fa1673ef75fed80c800d6
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.33/core-1.0.33.tgz
+    version: 1.0.33
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T13:27:19.586705086Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql-dhis2.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: eeb126740e00eb8443bde07ef5a492cf0a87c955762c1044d7ea1139b443d39f
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.32/core-1.0.32.tgz
+    version: 1.0.32
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-04T12:50:58.972023301Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - alias: postgresql-dhis2
+      condition: postgresql-dhis2.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: a63436dd0a4f3ed1f05f5232312c5868ae40fa480f54ed5cb96b00bb31fafb05
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.31/core-1.0.31.tgz
+    version: 1.0.31
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-04T07:01:34.258519638Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - alias: postgresql-dhis2
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 4d02a3572d3e9b7fb22bfff6e4827684b7883adabc99191e4944e433398f6751
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.30/core-1.0.30.tgz
+    version: 1.0.30
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T18:51:02.895966958Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 74ad687a37f7765242ada1fe9c1ddb47164816c95f27e22e30930981a82edaca
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.29/core-1.0.29.tgz
+    version: 1.0.29
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T18:33:30.664383197Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: a5def25a96aca9d7c64e0af70bd590d784552cb847ebfa94e234a741c1539c7a
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.28/core-1.0.28.tgz
+    version: 1.0.28
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T17:49:57.023905239Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 512259cf660c554b5e9bde4d9e2f9c1f2ec2ea117ffc78e50619167ecc3f0227
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.27/core-1.0.27.tgz
+    version: 1.0.27
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T17:22:28.230986575Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 38f39fdb9a83d4fe4edd9d048d03141a8b26544ae0c6498b1db8adf73179cfde
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.26/core-1.0.26.tgz
+    version: 1.0.26
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T10:40:08.188760737Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 337283eb8b39395d6ffc4d4a8c92b071ac71eb8086c417f7aad85e7b3d9cf641
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.25/core-1.0.25.tgz
+    version: 1.0.25
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T10:07:07.065592161Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 24168b694274401abb80ae9387a1716faf378043b0ec6053d7d819d1ce4c6a87
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.24/core-1.0.24.tgz
+    version: 1.0.24
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T09:56:18.529207608Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 43d03d841fe2f01e5fe3c2e4711680797e510bc068f194226f7974cee63c073f
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.23/core-1.0.23.tgz
+    version: 1.0.23
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-03T09:40:51.661151394Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 51c3ce9cf10640637f499cf8e670cfa326b058666ca06f232f873204409af568
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.22/core-1.0.22.tgz
+    version: 1.0.22
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-02T21:34:31.075988169Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: c307b2492c415fe065515e2753d091fd9644d7d80f7265242f61d2c09016b515
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.21/core-1.0.21.tgz
+    version: 1.0.21
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-02T12:56:58.616464896Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: DHIS 2 Helm Chart
+    digest: 9a67791368a562c65e7a7b3a1aa0186701f37e2e348be988ec81059ea064aad1
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.20/core-1.0.20.tgz
+    version: 1.0.20
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T21:42:23.164176069Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor-helm-charts.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: 0741de4dc0027ccb77c8fcbebc288c66592412d333d654127063edb08b5a9a20
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.19/core-1.0.19.tgz
+    version: 1.0.19
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T21:09:28.471467427Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~19
+    - condition: casdoor.enabled
+      name: casdoor-helm-charts
+      repository: oci://registry-1.docker.io/casbin
+      version: v1.739.0
+    description: DHIS 2 Helm Chart
+    digest: 20292589e89b80cce8faa6c5a4bb843c630f04488a72c8d35d7e67eaada3313a
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.18/core-1.0.18.tgz
+    version: 1.0.18
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T09:04:00.738293638Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 4b6b7b7a9f92b74ab11752982463b830f23cc63ca6b7c09d358f1624435ef1ea
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.17/core-1.0.17.tgz
+    version: 1.0.17
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T08:39:45.715955101Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 12672a6927774315f1c5dd5ffb5078fce1245383487ac60faf723cdd967da44c
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.16/core-1.0.16.tgz
+    version: 1.0.16
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T07:20:29.038337054Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 341d82b18e03d1ce7aff391f8c308b09401f7a349b6aa9703ce77c540366bc48
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.15/core-1.0.15.tgz
+    version: 1.0.15
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-01T06:21:41.329833289Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: f5d153d89603b339b7bc0c1a9784dc6609d0e717fd0cbe629b20bf810c30eb20
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.14/core-1.0.14.tgz
+    version: 1.0.14
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T20:25:42.828218801Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 6ed4ccf448c4bc5bbc135682d4dc5b76c55d6fc70ebb9cb7bf959bcecdb15614
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.13/core-1.0.13.tgz
+    version: 1.0.13
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T20:13:55.131001142Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 5bebcd3ef73992b609a8e9d8a94154228774c8bb7bc542df4d6d431bc8c1d933
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.12/core-1.0.12.tgz
+    version: 1.0.12
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T20:07:40.28187957Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 0dc25991b3f76b949486d0db70f777d4865158f5c0a4f9ffee07f966f3bd7829
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.11/core-1.0.11.tgz
+    version: 1.0.11
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T19:56:34.824224765Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 204dc09affd3019e53f951e9c58662959e38bec3ecdaad1739703fe7d310648d
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.10/core-1.0.10.tgz
+    version: 1.0.10
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T19:35:32.483939992Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: c1148c2771f1ec79dbada35edf7352eeb780d00d44c7418ed299d3774374b2bb
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.9/core-1.0.9.tgz
+    version: 1.0.9
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T19:28:35.887593852Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 9fc3166fe32d35a80334a7386e152672a420be88f627c10826b274fc14f7623c
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.8/core-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T19:22:28.819303603Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: adf60858e7ea09251343a5a735b281757aad7b66d6dc224e3d55965aec4b6388
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.7/core-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T19:15:27.841268366Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 6272283570f01fdf54d0941d38908a3067de1648e1e95368fe2e20ab3e6ee275
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.6/core-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T14:52:13.36948477Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: d314c4ea5aac59c8bb31d0a055dd4d2f67526758ff44aebab69348f20d12f555
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.5/core-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T14:04:10.044293307Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 31644f458b762e9caca27a93c1244a62574fa05127561dfbb103bd5dae285369
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.4/core-1.0.4.tgz
+    version: 1.0.4
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T13:55:10.353368842Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 2ab73ce70d5cfe005b916886f064051d96da0108f2cb1b5d6c51c35b536b9958
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.3/core-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T13:40:35.730866327Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: 9ae5847b78526c3299aed2c5c3d03d3b76beacdd6e1eeb214b959c1efdcf3729
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.2/core-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T13:18:16.925055564Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~20
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16
+    description: DHIS 2 Helm Chart
+    digest: b9e354dbef9b5340e8daedabbab70b777002054828fd9c1838d5cc2cdc99cb46
+    name: core
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.1/core-1.0.1.tgz
+    version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2024-10-31T10:56:32.636025858Z"
@@ -20,4 +1096,238 @@ entries:
     urls:
     - https://github.com/bombeke/dhis2-helm/releases/download/core-1.0.0/core-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-31T10:56:32.636046126Z"
+  dashboard:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-01-20T08:23:44.820434738Z"
+    dependencies:
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    - condition: kube-starrocks.enabled
+      name: kube-starrocks
+      repository: https://starrocks.github.io/starrocks-kubernetes-operator
+      version: ~1
+    - condition: drupal.enabled
+      name: drupal
+      repository: https://charts.bitnami.com/bitnami
+      version: ~21
+    description: A Helm chart for Kubernetes
+    digest: 172dbfb379ae426991259c3408b5117a8582d2bce342755462e0cea3662a7635
+    name: dashboard
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/dashboard-0.1.1/dashboard-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-11-11T13:06:05.170468806Z"
+    dependencies:
+    - condition: superset.enabled
+      name: superset
+      repository: https://apache.github.io/superset
+      version: ~0
+    - condition: trino.enabled
+      name: trino
+      repository: https://trinodb.github.io/charts
+      version: ~0
+    description: A Helm chart for Kubernetes
+    digest: 53a14b581bf61c266ff99c2aefeef4decfc4dda71983d1c6a34479e0895ca901
+    name: dashboard
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/dashboard-0.1.0/dashboard-0.1.0.tgz
+    version: 0.1.0
+  kafka:
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: jmx-exporter
+          image: docker.io/bitnami/jmx-exporter:1.0.1-debian-12-r9
+        - name: kafka
+          image: docker.io/bitnami/kafka:3.8.1-debian-12-r0
+        - name: kubectl
+          image: docker.io/bitnami/kubectl:1.31.2-debian-12-r3
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r32
+      licenses: Apache-2.0
+    apiVersion: v2
+    appVersion: 3.8.1
+    created: "2025-01-20T08:23:45.052459639Z"
+    dependencies:
+    - condition: kafka.enabled
+      name: kafka
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~30
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Helm Kafka Streaming Chart
+    digest: b8ac59a3921882d43afbbc1ee42d565bbee34e87585791218297386cdbe46e85
+    name: kafka
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.1/kafka-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: jmx-exporter
+          image: docker.io/bitnami/jmx-exporter:1.0.1-debian-12-r9
+        - name: kafka
+          image: docker.io/bitnami/kafka:3.8.1-debian-12-r0
+        - name: kubectl
+          image: docker.io/bitnami/kubectl:1.31.2-debian-12-r3
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r32
+      licenses: Apache-2.0
+    apiVersion: v2
+    appVersion: 3.8.1
+    created: "2024-11-11T13:06:05.298411335Z"
+    dependencies:
+    - condition: kafka.enabled
+      name: kafka
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~30
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Helm Kafka Streaming Chart
+    digest: 2a9a6805ae4a670b6fe47791468fcbe40c3cfcb6b6ebc496d7e15a34075604b7
+    name: kafka
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/kafka-0.1.0/kafka-0.1.0.tgz
+    version: 0.1.0
+  smartai:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-22T10:41:41.415334709Z"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: A Helm chart for Kubernetes
+    digest: dd7a6d764d488f2e9a8c1c29e59e2bd6acdd66a3672566a3d0c8d2013b6f482a
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.7/smartai-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-22T09:23:52.634960925Z"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: A Helm chart for Kubernetes
+    digest: a87300dbcf81c446235f4fd84ee2ee32ba23353ac92a8f924fb7ccc6cede0b82
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.6/smartai-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-22T06:15:56.035556275Z"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: A Helm chart for Kubernetes
+    digest: 70d6162d104da015ff7e21974b513b97d4276d891bc61e5758f118dc8c2fc8a2
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.5/smartai-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-22T05:38:13.107625659Z"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: A Helm chart for Kubernetes
+    digest: d50d018b695b29df21116ac21a3df3c1da641184cdeb55bb685e73916f9192a6
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.4/smartai-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-20T09:02:10.516619164Z"
+    description: A Helm chart for Kubernetes
+    digest: 31d3a2557892beb2b855e808e040f3e2d131ea828e10ac275993e2a818c85175
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.3/smartai-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-20T08:23:45.211934546Z"
+    description: A Helm chart for Kubernetes
+    digest: 57a40d5a6feb40cf6b5bf6e6004a031bb013da71fb7eda51d7cfa404b2f21286
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.2/smartai-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-18T19:21:34.526404461Z"
+    description: A Helm chart for Kubernetes
+    digest: 2fe42dcdf6a896da655b5f6d1396a76dd4702ab44566e4688b2f83d3dbfce3ae
+    name: smartai
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/smartai-0.1.1/smartai-0.1.1.tgz
+    version: 0.1.1
+  tritonserver:
+  - apiVersion: v2
+    appVersion: 24.12.0
+    created: "2025-01-22T05:38:13.203467871Z"
+    description: A Helm chart for Kubernetes
+    digest: bc2f2c1050d4d0623a58eacfcaaacbbd739de09a167d2ff4baceca8b95f05097
+    name: tritonserver
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/tritonserver-0.1.3/tritonserver-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 24.12.0
+    created: "2025-01-20T08:23:45.387273718Z"
+    description: A Helm chart for Kubernetes
+    digest: eba91d74c381f8f9d9bfab65bb4750ca77473b63d5ee21c146c2b199b936f4c4
+    name: tritonserver
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/tritonserver-0.1.2/tritonserver-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 24.12.0
+    created: "2025-01-18T19:21:34.662645166Z"
+    description: A Helm chart for Kubernetes
+    digest: 0267f2d86f574a786510976b5b5f2a2f41675045b615600e410a872b2ab7b75e
+    name: tritonserver
+    type: application
+    urls:
+    - https://github.com/bombeke/dhis2-helm/releases/download/tritonserver-0.1.1/tritonserver-0.1.1.tgz
+    version: 0.1.1
+generated: "2025-01-22T10:41:41.415435758Z"

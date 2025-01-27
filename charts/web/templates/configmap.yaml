@@ -1,0 +1,13 @@
+{{- if .Values.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "web.fullname" . }}
+  labels:
+    {{- include "web.labels" . | nindent 4 }}
+data: 
+  AppConfig.json: |
+    {{- .Values.appConfig | nindent 4 }}
+  default.conf: |
+    {{- .Values.webConfig | nindent 4 }}
+{{- end }}   

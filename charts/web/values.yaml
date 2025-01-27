@@ -1,30 +1,27 @@
-# Default values for tritonserver.
+# Default values for web.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
+enabled: true
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: "nvcr.io/nvidia/tritonserver"
+  repository: talexie/his_dashboard
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "24.12-py3"
+  tag: "1.0.0"
 
-# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
 
-# Extra configuration
-# add server args here e.g. --grpc-use-ssl, --grpc-server-certs, repository-poll-secs, etc
-serverArgs:
-  - '--model-repository=/models'
-
-#This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -37,45 +34,44 @@ serviceAccount:
   name: ""
 
 # This is for setting Kubernetes Annotations to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ 
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-podSecurityContext: 
-  fsGroup: 1000
+podSecurityContext: {}
+  # fsGroup: 2000
 
 securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
+  readOnlyRootFilesystem: false
+  #runAsNonRoot: true
   runAsUser: 1000
+  runAsGroup: 65534
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 8000
+  port: 80
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
-  grpcHost: grpc.example.local
   className: ""
   certIssuer: le-staging
-  hostname: "triton.default.svc.cluster.local"
+  hostname: "web.default.svc.cluster.local"
   annotations:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: le-staging
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-
   hosts:
-    - host: triton.default.svc.cluster.local
+    - host: web.default.svc.cluster.local
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -84,7 +80,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: 
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -95,37 +91,20 @@ resources:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-  #limits:
-  #  nvidia.com/gpu: 1
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
-  initialDelaySeconds: 15
-  failureThreshold: 3
-  periodSeconds: 10
+  enabled: false
   httpGet:
-    path: /v2/health/live
+    path: /
     port: http
-    
 readinessProbe:
-  initialDelaySeconds: 5
-  periodSeconds: 5
-  failureThreshold: 3
+  enabled: false
   httpGet:
-    path: /v2/health/ready
+    path: /
     port: http
 
-startupProbe:
-  # allows Triton to load the models during 30*10 = 300 sec = 5 min
-  # starts checking the other probes only after the success of this one
-  # for details, see https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
-  periodSeconds: 10
-  failureThreshold: 30
-  httpGet:
-    path: /v2/health/ready
-    port: http
-
-#This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -156,3 +135,36 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+webHome: "/usr/share/nginx/html2"
+
+appConfig: |
+  url: localhost
+
+webConfig: |
+  server {
+    listen 80;
+    server_name _; # Replace with your domain or IP address
+
+    root /usr/share/nginx/html; # Replace with the path to your build folder
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    # Optional: Cache static files for improved performance
+    location ~* \.(?:ico|css|js|gif|jpe?g|png|woff2?|eot|ttf|svg)$ {
+        expires 30m; # Cache these files for 6 months
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    error_page 404 /index.html; # Serve index.html for unknown routes (not needed for HashRouter but safe to include)
+
+    # Optional: Compression for better performance
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_min_length 1000;
+  }
+
