@@ -6,8 +6,8 @@ metadata:
   name: {{ include "smartai.fullname" . }}
   labels:
     {{- include "smartai.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{include "smartai.fullname" . }}-middleware@kubernetescrd
