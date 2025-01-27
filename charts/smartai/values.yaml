@@ -149,6 +149,9 @@ configIni: |
 
 certPublicPem: ""
 
+# Add a list of allowed origins
+allowedOrigins: []
+
 # MongoDB dependency configuration
 mongodb:
   enabled: true
