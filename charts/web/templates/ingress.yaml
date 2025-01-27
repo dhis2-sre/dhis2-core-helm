@@ -6,10 +6,11 @@ metadata:
   name: {{ include "web.fullname" . }}
   labels:
     {{- include "web.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{include "web.fullname" . }}-middleware@kubernetescrd
   {{- if $tls }}
     cert-manager.io/cluster-issuer: {{ .Values.ingress.certIssuer | quote }}
     ingress.kubernetes.io/ssl-redirect: "true"
@@ -46,3 +47,15 @@ spec:
           {{- end }}
     {{- end }}
 {{- end }}
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "web.fullname" . }}-middleware
+  labels:
+{{- include "web.labels" . | nindent 4 }}
+spec:
+  headers:
+    accessControlAllowOriginList:
+{{ toYaml .Values.allowedOrigins | nindent 6 }}

@@ -140,6 +140,9 @@ webHome: "/usr/share/nginx/html2"
 
 appConfig: |
   url: localhost
+  
+# Add a list of allowed origins
+allowedOrigins: []
 
 webConfig: |
   server {
