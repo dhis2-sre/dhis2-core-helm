@@ -149,6 +149,10 @@ configIni: |
 
 certPublicPem: ""
 
+middleware:
+  headers:
+    accessControlAllowHeaders: 
+      - "*"
 # Add a list of allowed origins
 allowedOrigins: []
 

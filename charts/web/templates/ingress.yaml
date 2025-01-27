@@ -57,5 +57,8 @@ metadata:
 {{- include "web.labels" . | nindent 4 }}
 spec:
   headers:
+{{- with .Values.middleware.headers }}
+  {{- toYaml . | nindent 4 }}
+{{- end }}
     accessControlAllowOriginList:
 {{ toYaml .Values.allowedOrigins | nindent 6 }}

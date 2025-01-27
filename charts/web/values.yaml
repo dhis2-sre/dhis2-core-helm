@@ -141,6 +141,10 @@ webHome: "/usr/share/nginx/html2"
 appConfig: |
   url: localhost
   
+middleware:
+  headers:
+    accessControlAllowHeaders: 
+      - "*"
 # Add a list of allowed origins
 allowedOrigins: []
 
