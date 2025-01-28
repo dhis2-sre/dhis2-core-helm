@@ -46,7 +46,6 @@ metadata:
 {{- include "dhis2-helm.labels" . | nindent 4 }}
 spec:
   headers:
-{{- with .Values.casdoor-helm-charts.middleware.headers }}
+  {{- with .Values.casdoor-helm-charts.middleware.headers }}
   {{- toYaml . | nindent 4 }}
-{{- end }}
-
+  {{- end }}
