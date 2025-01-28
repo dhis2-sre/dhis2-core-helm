@@ -495,10 +495,10 @@ casdoor-helm-charts:
   ingress:
     enabled: true
     annotations:
-      - traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{include "dhis2-helm.fullname" . }}-casdoor-middleware@kubernetescrd
-      - cert-manager.io/cluster-issuer: le-staging
-      - ingress.kubernetes.io/ssl-redirect: "true"
-      - traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      #traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{include "dhis2-helm.fullname" . }}-casdoor-middleware@kubernetescrd
+      #cert-manager.io/cluster-issuer: le-staging
+      #ingress.kubernetes.io/ssl-redirect: "true"
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
     hosts: 
       - host: casdoor.default.svc.cluster.local
         paths:
