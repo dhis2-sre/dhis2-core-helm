@@ -478,7 +478,13 @@ mariadb:
       else
         echo "Creating authentication database on primary node failed"
       fi
-
+      
+# Specify casdoor middleware
+casdoor:
+  middleware:
+    headers:
+      accessControlAllowHeaders: 
+        - "*"
 casdoor-helm-charts:
   enabled: true
   database:
@@ -488,10 +494,7 @@ casdoor-helm-charts:
     host: dhis2app-mariadb.default.svc.cluster.local
     port: 3306
     databaseName: casdoor
-  middleware:
-    headers:
-      accessControlAllowHeaders: 
-        - "*"
+
   ingress:
     enabled: true
     annotations:

@@ -43,9 +43,9 @@ kind: Middleware
 metadata:
   name: {{ include "dhis2-helm.fullname" . }}-casdoor-middleware
   labels:
-{{- include "dhis2-helm.labels" . | nindent 4 }}
+    {{- include "dhis2-helm.labels" . | nindent 4 }}
 spec:
   headers:
-  {{- with .Values.casdoor-helm-charts.middleware.headers }}
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.casdoor.middleware.headers }}
+    {{- toYaml . | nindent 6 }}
+    {{- end }}

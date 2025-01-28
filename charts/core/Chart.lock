@@ -1,7 +1,7 @@
 dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 20.2.2
+  version: 20.6.3
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 12.12.10
@@ -11,5 +11,5 @@ dependencies:
 - name: casdoor-helm-charts
   repository: oci://registry-1.docker.io/casbin
   version: v1.739.0
-digest: sha256:31e1104b2aea8010e6357127357963a0ae32e60ec433da89c670c320d2812662
-generated: "2024-11-12T11:11:19.773821618+03:00"
+digest: sha256:3789460efe73a397e23b39ccd79f227cd17fc433de866c85cf8712417c62b194
+generated: "2025-01-28T10:39:56.514565158+03:00"
