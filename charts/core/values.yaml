@@ -490,7 +490,7 @@ casdoor-helm-charts:
     databaseName: casdoor
   ingress:
     enabled: true
-    annotations:
+    annotations: |
       traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{include "dhis2-helm.fullname" . }}-casdoor-middleware@kubernetescrd
       cert-manager.io/cluster-issuer: le-staging
       ingress.kubernetes.io/ssl-redirect: "true"
