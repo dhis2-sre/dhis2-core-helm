@@ -37,3 +37,16 @@ spec:
                   number: {{ $svcPort }}
 {{- end }}
 
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "dhis2-helm.fullname" . }}-casdoor-middleware
+  labels:
+{{- include "dhis2-helm.labels" . | nindent 4 }}
+spec:
+  headers:
+{{- with .Values.casdoor-helm-charts.middleware.headers }}
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+
