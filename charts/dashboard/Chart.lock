@@ -1,15 +1,21 @@
 dependencies:
 - name: superset
   repository: https://apache.github.io/superset
-  version: 0.13.4
+  version: 0.14.0
 - name: trino
   repository: https://trinodb.github.io/charts
   version: 0.34.0
 - name: kube-starrocks
   repository: https://starrocks.github.io/starrocks-kubernetes-operator
-  version: 1.9.9
+  version: 1.9.10
 - name: drupal
   repository: https://charts.bitnami.com/bitnami
-  version: 21.0.4
-digest: sha256:c4a05f35bb36c0c0d9b51452038c21b917a0ed8347dc7f47c46dedeb525a8ff9
-generated: "2024-11-27T11:44:14.7674047+03:00"
+  version: 21.1.2
+- name: opensearch
+  repository: https://opensearch-project.github.io/helm-charts
+  version: 2.30.1
+- name: opensearch-dashboards
+  repository: https://opensearch-project.github.io/helm-charts
+  version: 2.26.0
+digest: sha256:1d71926a2ba861bebe52a5c5be9a449962b37f6ebfa5529dab836bd8dc5fe800
+generated: "2025-02-04T00:11:40.30244121+03:00"

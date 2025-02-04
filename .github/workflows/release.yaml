@@ -33,6 +33,7 @@ jobs:
           helm repo add trino https://trinodb.github.io/charts
           helm repo add jetstack https://charts.jetstack.io
           helm repo add starrocks https://starrocks.github.io/starrocks-kubernetes-operator
+          helm repo add opensearch https://opensearch-project.github.io/helm-charts
           helm repo update
           helm dependency update charts/core
           helm dependency update charts/dashboard
@@ -40,6 +41,7 @@ jobs:
           helm dependency update charts/certmanager
           helm dependency update charts/smartai
           helm dependency update charts/tritonserver
+          helm dependency update charts/web
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         with:
