@@ -263,50 +263,39 @@ drupal:
       cert-manager.io/cluster-issuer: le-staging
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
     tls: true
-# OpenSearch
+# OpenSearch 1013494018
 opensearch:
   enabled: false
   # Enabling this will publically expose your OpenSearch instance.
   # Only enable this if you have security enabled on your cluster
   ingress:
     enabled: false
+    tls: false
     annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
       cert-manager.io/cluster-issuer: le-staging
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    ingressLabels: {}
     path: /
-    hosts:
-      - "opensearch.default.svc.cluster.local"
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-  extraEnvs:
-  - name: OPENSEARCH_INITIAL_ADMIN_PASSWORD
-    value: <strong-password>
-opensearch-dashboards:
-  enabled: false
-  ingress:
-    enabled: false
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      cert-manager.io/cluster-issuer: le-staging
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    labels: {}
-    hosts:
-      - host: "opensearch-dashboards.default.svc.cluster.local"
-        paths:
-          - path: /
-            backend:
-              serviceName: ""
-              servicePort: ""
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    hosts: "opensearch.default.svc.cluster.local"
+  master:
+    replicaCount: 2
+  data:
+    replicaCount: 2
+  ingest:
+    replicaCount: 2
+  coordinating:
+    replicaCount: 2
+  dashboards:
+    enabled: true
+    # Enabling this will publically expose your OpenSearch instance.
+    # Only enable this if you have security enabled on your cluster
+    ingress:
+      enabled: false
+      annotations:
+        cert-manager.io/cluster-issuer: le-staging
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      path: /
+      hosts: "opensearchdash.default.svc.cluster.local"
+      tls: false
 
 kube-starrocks:
   enabled: false
