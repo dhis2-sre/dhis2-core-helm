@@ -263,7 +263,7 @@ drupal:
       cert-manager.io/cluster-issuer: le-staging
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
     tls: true
-# OpenSearch 1013494018
+# OpenSearch
 opensearch:
   enabled: false
   # Enabling this will publically expose your OpenSearch instance.
@@ -275,7 +275,7 @@ opensearch:
       cert-manager.io/cluster-issuer: le-staging
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
     path: /
-    hosts: "opensearch.default.svc.cluster.local"
+    hostname: "opensearch.default.svc.cluster.local"
   master:
     replicaCount: 2
   data:
@@ -294,7 +294,7 @@ opensearch:
         cert-manager.io/cluster-issuer: le-staging
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       path: /
-      hosts: "opensearchdash.default.svc.cluster.local"
+      hostname: "opensearchdash.default.svc.cluster.local"
       tls: false
 
 kube-starrocks:

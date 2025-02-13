@@ -135,7 +135,7 @@ autoscaling:
 
 storage:
   persisted: true
-  volumeSize: 1Gi
+  volumeSize: 10Gi
   className: ~
 
 # Additional volumes on the output Deployment definition.
