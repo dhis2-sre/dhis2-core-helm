@@ -138,6 +138,55 @@ listeners:
 ingress:
   enabled: false
 
+connectors:
+  - name: starrocks-kafka-connector
+    config:
+      connector.class: com.starrocks.connector.kafka.StarRocksSinkConnector
+      topics: test
+      key.converter: org.apache.kafka.connect.json.JsonConverter
+      value.converter: org.apache.kafka.connect.json.JsonConverter
+      key.converter.schemas.enable: true
+      value.converter.schemas.enable: false
+      starrocks.http.url: 192.168.9.10:8030
+      starrocks.topic2table.map: "test:test_tbl"
+      starrocks.username: user1
+      starrocks.password: "123456"
+      starrocks.database.name: example_db
+      sink.properties.strip_outer_array: true
+
+  - name: mongodb-source
+    config:
+      connection.uri: "mongodb://root:password@mongodb-hostname:27017"
+      connector.class: com.mongodb.kafka.connect.MongoSourceConnector
+      database: test
+      collection: test
+      output.format.value: json
+      output.format.key: json
+      key.converter.schemas.enable: "false"
+      value.converter.schemas.enable: "false"
+      key.converter: org.apache.kafka.connect.json.JsonConverter
+      value.converter: org.apache.kafka.connect.json.JsonConverter
+
+  - name: opensearch-sink
+    config:
+      connector.class: io.aiven.kafka.connect.opensearch.OpensearchSinkConnector
+      tasks.max: 1
+      topics: test-opensearch-sink
+      key.ignore: "true"
+      connection.url: "http://localhost:9200"
+      type.name: kafka-connect
+      index.write.method: upsert
+      connection.username: admin
+      connection.password: ""
+
+  - name: milvus-connector
+    config:
+      public.endpoint: https://url
+      connector.class: com.milvus.io.kafka.MilvusSinkConnector
+      token: ""
+      collection.name: topic_0
+      topics: topic_0
+
 kafka:
   enabled: true
   image:
@@ -733,40 +782,9 @@ kafka:
           connection.uri=mongodb://root:password@mongodb-hostname:27017
           ...
         connector-config.json: |  
-          [ 
-            {
-              "name": "starrocks-kafka-connector",
-              "config": {
-                "connector.class":"com.starrocks.connector.kafka.StarRocksSinkConnector",
-                "topics":"test",
-                "key.converter":"org.apache.kafka.connect.json.JsonConverter",
-                "value.converter":"org.apache.kafka.connect.json.JsonConverter",
-                "key.converter.schemas.enable":true,
-                "value.converter.schemas.enable":false,
-                "starrocks.http.url":"192.168.9.10:8030",
-                "starrocks.topic2table.map":"test:test_tbl",
-                "starrocks.username":"user1",
-                "starrocks.password":"123456",
-                "starrocks.database.name":"example_db",
-                "sink.properties.strip_outer_array":true
-              }
-            },
-            {
-              "name":"mongodb-source",
-              "config":{
-                "connection.uri":"mongodb://root:password@mongodb-hostname:27017",
-                "connector.class":"com.mongodb.kafka.connect.MongoSourceConnector",
-                "database":"test",
-                "collection":"test",
-                "output.format.value":"json",
-                "output.format.key":"json",
-                "key.converter.schemas.enable":"false",
-                "value.converter.schemas.enable":"false",
-                "key.converter":"org.apache.kafka.connect.json.JsonConverter",
-                "value.converter":"org.apache.kafka.connect.json.JsonConverter"
-              }
-            }
-          ]
+        {{- with .Values.connectors }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end}}
 
     - |
@@ -860,6 +878,8 @@ kafka:
           mkdir -p /connectors/starrocks-kafka-connector-1.0.4
           curl --output /connectors/mongo-kafka-connect-1.13.1-all.jar --remote-name --location --silent https://search.maven.org/remotecontent?filepath=org/mongodb/kafka/mongo-kafka-connect/1.13.1/mongo-kafka-connect-1.13.1-all.jar
           curl --output /connectors/starrocks-kafka-connector-1.0.4.tar.gz  --remote-name --location --silent https://github.com/StarRocks/starrocks-connector-for-kafka/releases/download/v1.0.4/starrocks-kafka-connector-1.0.4.tar.gz && tar -xvzf  /connectors/starrocks-kafka-connector-1.0.4.tar.gz -C /connectors && rm /connectors/starrocks-kafka-connector-1.0.4.tar.gz
+          curl --output /connectors/zilliz-kafka-connect-milvus-1.0.1.zip  --remote-name --location --silent https://github.com/zilliztech/kafka-connect-milvus/releases/download/v1.0.1/zilliz-kafka-connect-milvus-1.0.1.zip && unzip /connectors/zilliz-kafka-connect-milvus-1.0.1.zip -d /connectors && rm /connectors/zilliz-kafka-connect-milvus-1.0.1.zip
+          curl --output /connectors/opensearch-connector-for-apache-kafka-3.1.1.zip  --remote-name --location --silent https://github.com/Aiven-Open/opensearch-connector-for-apache-kafka/releases/download/v3.1.1/opensearch-connector-for-apache-kafka-3.1.1.zip && unzip /connectors/opensearch-connector-for-apache-kafka-3.1.1.zip -d /connectors && rm /connectors/opensearch-connector-for-apache-kafka-3.1.1.zip
         kafka-init-connect.sh: |-
           #!/bin/bash
 
@@ -1191,4 +1211,3 @@ kafka:
             targetPort: connector
         selector: {{- include "common.labels.matchLabels" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
           app.kubernetes.io/component: connector
-
