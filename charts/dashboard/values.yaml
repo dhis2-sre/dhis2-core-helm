@@ -220,7 +220,6 @@ superset:
 
     echo "Downloading drivers"
     echo "{{ .Values.postgresql.auth.username }}"
-    echo "{{ .Values.superset.postgresql.auth.username }}"
 
     curl --silent -Lo /app/superset/db_engine_specs/dhis2_api.py https://raw.githubusercontent.com/talexie/dhis2-docker/refs/heads/master/superset/dhis2_api.py
     echo "Installed drivers successfully"
