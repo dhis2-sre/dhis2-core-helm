@@ -1,4 +1,4 @@
-# DHIS2 Extended Dashboard Helm Chart
+# Beyond Data Platform Helm Chart
 
 ## Configuration
 
@@ -52,7 +52,7 @@ To update dhis2-helm chart repository
 ```sh
 helm repo update
 helm search repo dhis2/smartai --versions
-helm install smart dhis2/smartai -f values.yaml
+helm install smart dhis2/smartai -n smart --create-namespace -f values.yaml
 ```
 Example smart values.yaml
 

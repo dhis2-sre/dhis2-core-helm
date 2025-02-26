@@ -134,7 +134,7 @@ superset:
       database: superset
       password: superset
       username: superset
-      postgresqlPassword: superset
+      postgresPassword: superset
     image:
       tag: 17.0.0-debian-12-r9
   ingress:
@@ -183,7 +183,7 @@ superset:
         "DASHBOARD_NATIVE_FILTERS": True
       }
       ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
-      APP_NAME = "Bombeke Dashboard"
+      APP_NAME = "Bombeke Beyond Data Platform"
       CACHE_CONFIG = {
           'CACHE_TYPE': 'redis',
           'CACHE_DEFAULT_TIMEOUT': 300,  # 5 minutes
