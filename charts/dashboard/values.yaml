@@ -142,7 +142,7 @@ superset:
     passwordUpdateJob:
       enabled: true
     primary:
-      configuration:
+      configuration: |-
         listen_addresses: '*'
         max_connections: 100
       pgHbaConfiguration: |-
