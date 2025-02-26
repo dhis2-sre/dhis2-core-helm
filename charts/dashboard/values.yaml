@@ -129,14 +129,26 @@ superset:
     tag: 4.1.1-6
   postgresql:
     enabled: true
-    #debug: true
+    debug: true
     auth:
       database: superset
       password: superset
       username: superset
       postgresPassword: superset
-    image:
-      tag: 17.0.0-debian-12-r9
+    #image:
+    #  registry: docker.io
+    #  repository: bitnami/postgresql
+    #  tag: 17.4.0-debian-12-r2
+    passwordUpdateJob:
+      enabled: true
+    primary:
+      configuration:
+        listen_addresses: '*'
+        max_connections: 100
+      pgHbaConfiguration: |-
+        local all all trust
+        host all all localhost trust
+        host all all 0.0.0.0/0 md5  
   ingress:
     enabled: true
     ingressClassName: ~
@@ -219,7 +231,6 @@ superset:
     #!/bin/bash
 
     echo "Downloading drivers"
-    echo "{{ .Values.postgresql.auth.username }}"
 
     curl --silent -Lo /app/superset/db_engine_specs/dhis2_api.py https://raw.githubusercontent.com/talexie/dhis2-docker/refs/heads/master/superset/dhis2_api.py
     echo "Installed drivers successfully"
