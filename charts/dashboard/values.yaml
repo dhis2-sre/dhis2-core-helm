@@ -142,9 +142,6 @@ superset:
     passwordUpdateJob:
       enabled: true
     primary:
-      configuration: |-
-        listen_addresses: '*'
-        max_connections: 100
       pgHbaConfiguration: |-
         local all all trust
         host all all localhost trust
