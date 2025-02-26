@@ -219,7 +219,8 @@ superset:
     #!/bin/bash
 
     echo "Downloading drivers"
-
+    echo {{ .Values.postgresql.auth.username }}
+    echo {{ .Values.superset.postgresql.auth.username }}
 
     curl --silent -Lo /app/superset/db_engine_specs/dhis2_api.py https://raw.githubusercontent.com/talexie/dhis2-docker/refs/heads/master/superset/dhis2_api.py
     echo "Installed drivers successfully"
@@ -235,6 +236,8 @@ superset:
       sqlalchemy-solr \
       'sqlparse>0.5,<0.6.0' \
       sqlalchemydhis2>=1.0.71 \
+      "sqlalchemy>=1.4, <2" \
+      "sqlalchemy-utils>=0.38.3, <0.39" \
       starrocks \
       trino --retries 100 --timeout 60 && \
     if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
