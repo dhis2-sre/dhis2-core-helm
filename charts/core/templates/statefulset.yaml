@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "dhis2-helm.fullname" . }}
-  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     {{- include "dhis2-helm.labels" . | nindent 4 }}
 spec:

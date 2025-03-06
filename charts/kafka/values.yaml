@@ -205,7 +205,6 @@ kafka:
       kind: StatefulSet
       metadata:
         name: {{ printf "%s-controller-connect" (include "common.names.fullname" .) }}
-        namespace: {{ include "common.names.namespace" . | quote }}
         labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
           app.kubernetes.io/component: controller-eligible
           app.kubernetes.io/part-of: kafka
@@ -740,7 +739,6 @@ kafka:
       kind: ConfigMap
       metadata:
         name: {{ printf "%s-controller-configuration-connect" (include "common.names.fullname" .) }}
-        namespace: {{ include "common.names.namespace" . | quote }}
         labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
           app.kubernetes.io/component: controller-eligible
           app.kubernetes.io/part-of: kafka
