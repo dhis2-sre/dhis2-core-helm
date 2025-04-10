@@ -87,8 +87,8 @@ database:
  url: "localhost"
  password: "password"
 ```
-## Installing TritonServer for Inference (Community version)
-[DHIS2 Triton server helm chart](./charts/tritonserver) is published to
+## Installing AI/ML Inference Service
+[AI/ML Inference server helm chart](./charts/tritonserver) is published to
 https://bombeke.github.io/dhis2-helm
 
 To update dhis2-helm chart repository
@@ -98,7 +98,7 @@ helm repo update
 helm search repo dhis2/tritonserver --versions
 ```
 
-## Installing Starrocks Datawarehouse
+## Installing Data Warehouse
 ```
 starrocks:
     initPassword:
