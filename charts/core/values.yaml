@@ -19,7 +19,7 @@ dhisConfig: |
   # Server base URL
   server.base.url = https://dhis2-core.127.0.0.1.nip.io/
 
-## If MinIO is configured then the following configuration is ignored and no pvc will be created
+## If MinIO or S3 is configured then the following configuration is ignored and no pvc will be created
 storage:
   volumeSize: 8Gi
   className: ~
@@ -46,7 +46,7 @@ log4j2: config/log4j2.xml
 
 serverXml: config/server.xml
 
-catalinaOpts: "-Dcontext.path=''"
+catalinaOpts: "-Dcontext.path='' -Dcontext.sameSiteCookies='lax'"
 javaOpts: ""
 
 minReadySeconds: 120
