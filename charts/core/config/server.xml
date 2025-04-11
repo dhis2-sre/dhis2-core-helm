@@ -140,8 +140,9 @@
                     deployOnStartup="false"
             >
 
-                <Context path="${context.path}" docBase="ROOT/" />
-
+                <Context path="${context.path}" docBase="ROOT/">
+                    <CookieProcessor sameSiteCookies="${context.sameSiteCookies}"/>
+                </Context>
                 <!-- SingleSignOn valve, share authentication between web applications
                      Documentation at: /docs/config/valve.html -->
                 <!--
