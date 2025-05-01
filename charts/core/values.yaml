@@ -40,8 +40,7 @@ storage:
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
 
-## Custom init containers
-## Array of init containers to be added to the pod
+## Init containers
 initContainers: []
 # - name: custom-init
 #   image: busybox
