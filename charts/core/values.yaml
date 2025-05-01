@@ -6,7 +6,7 @@ commonLabels: {}
 googleAuth:
   projectId: ""
   privateKeyId: ""
-  privateKey: '' # Use single quotes if the string contains \n or other characters which shouldn't be evaluated by helm
+  privateKey: '' # Use single quotes if the string contains \n or other characters which helm shouldn't evaluate
   clientEmail: ""
   clientId: ""
 
@@ -19,12 +19,12 @@ dhisConfig: |
   # Server base URL
   server.base.url = https://dhis2-core.127.0.0.1.nip.io/
 
-## If MinIO or S3 is configured then the following configuration is ignored and no pvc will be created
+## If MinIO or S3 is configured, then the following configuration is ignored and no pvc will be created
 storage:
   volumeSize: 8Gi
   className: ~
 
-## minIOConfig and S3Config are mutually exclusive make sure to only set one of them
+## minIOConfig and S3Config are mutually exclusive, so make sure to only set one of them
 #minIOConfig: |
 #  filestore.provider = s3
 #  filestore.container = dhis2
@@ -39,6 +39,16 @@ storage:
 #  filestore.location = eu-west-1
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
+
+## Custom init containers
+## Array of init containers to be added to the pod
+initContainers: []
+# - name: custom-init
+#   image: busybox
+#   command: ['sh', '-c', 'echo custom init container']
+#   volumeMounts:
+#    - name: dhis-home
+#      mountPath: /dhis-home
 
 dhis2Home: /opt/dhis2
 
