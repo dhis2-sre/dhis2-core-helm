@@ -49,7 +49,7 @@ spec:
       {{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
         - name: dhis2-home-permissions
           image: busybox
-          command: [ 'sh', '-c', 'mkdir -p {{ .Values.dhis2Home }} && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.dhis2Home }} && chmod u+rw,go-rwx {{ .Values.dhis2Home }}' ]
+          command: [ 'sh', '-c', 'mkdir -p {{ .Values.dhis2Home }}/files && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.dhis2Home }}/files && chmod u+rw,go-rwx {{ .Values.dhis2Home }}/files' ]
           volumeMounts:
             - name: dhis-home
               mountPath: {{ .Values.dhis2Home }}
