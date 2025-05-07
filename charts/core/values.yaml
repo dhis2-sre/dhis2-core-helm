@@ -6,7 +6,7 @@ commonLabels: {}
 googleAuth:
   projectId: ""
   privateKeyId: ""
-  privateKey: '' # Use single quotes if the string contains \n or other characters which shouldn't be evaluated by helm
+  privateKey: '' # Use single quotes if the string contains \n or other characters which helm shouldn't evaluate
   clientEmail: ""
   clientId: ""
 
@@ -16,17 +16,15 @@ dhisConfig: |
   connection.url = jdbc:postgresql://dhis2-postgresql.dhis2.svc/dhis2
   connection.username = dhis
   connection.password = dhis
-  # Database schema behavior, can be validate, update, create, create-drop
-  connection.schema = update
   # Server base URL
   server.base.url = https://dhis2-core.127.0.0.1.nip.io/
 
-## If MinIO is configured then the following configuration is ignored and no pvc will be created
+## If MinIO or S3 is configured, then the following configuration is ignored and no pvc will be created
 storage:
   volumeSize: 8Gi
   className: ~
 
-## minIOConfig and S3Config are mutually exclusive make sure to only set one of them
+## minIOConfig and S3Config are mutually exclusive, so make sure to only set one of them
 #minIOConfig: |
 #  filestore.provider = s3
 #  filestore.container = dhis2
@@ -42,13 +40,22 @@ storage:
 #  filestore.identity = dhisdhis
 #  filestore.secret = dhisdhis
 
+## Init containers
+initContainers: []
+# - name: custom-init
+#   image: busybox
+#   command: ['sh', '-c', 'echo custom init container']
+#   volumeMounts:
+#    - name: dhis-home
+#      mountPath: /dhis-home
+
 dhis2Home: /opt/dhis2
 
 log4j2: config/log4j2.xml
 
 serverXml: config/server.xml
 
-catalinaOpts: "-Dcontext.path=''"
+catalinaOpts: "-Dcontext.path='' -Dcontext.sameSiteCookies='lax'"
 javaOpts: ""
 
 minReadySeconds: 120

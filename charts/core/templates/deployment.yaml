@@ -41,15 +41,20 @@ spec:
       serviceAccountName: {{ include "dhis2-core-helm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-{{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
+      {{- if or (not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config"))) .Values.initContainers }}
       initContainers:
+      {{- with .Values.initContainers }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if not (or (hasKey .Values "minIOConfig") (hasKey .Values "S3Config")) }}
         - name: dhis2-home-permissions
           image: busybox
-          command: [ 'sh', '-c', 'mkdir -p /dhis-home && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /dhis-home && chmod u+rw,go-rwx /dhis-home' ]
+          command: [ 'sh', '-c', 'mkdir -p {{ .Values.dhis2Home }} && chown {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.dhis2Home }} && chmod u+rw,go-rwx {{ .Values.dhis2Home }} && mkdir -p {{ .Values.dhis2Home }}/files && chown -R {{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} {{ .Values.dhis2Home }}/files && chmod -R u+rw,go-rwx {{ .Values.dhis2Home }}/files' ]
           volumeMounts:
             - name: dhis-home
-              mountPath: /dhis-home
-{{- end }}
+              mountPath: {{ .Values.dhis2Home }}
+      {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
